@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+</head>
+<body>
+<form method="post" th:object="${form}" th:action>
+    <label th:for="*{email}">이메일</label>
+    <input type="text" th:name="*{email}" th:field="*{email}">
+
+    <label th:for="*{password}">비밀번호</label>
+    <input type="password" th:name="*{password}" th:field="*{password}">
+
+    <label th:for="*{nickname}">별명</label>
+    <input type="text" th:name="*{nickname}" th:field="*{nickname}">
+
+    <label th:for="*{intro}">소개글</label>
+    <textarea th:placeholder="'소개글을 입력해주세요'" th:field="*{intro}" style="resize: none"></textarea>
+
+    <button>가입할게요</button>
+</form>
+</body>
+</html>
