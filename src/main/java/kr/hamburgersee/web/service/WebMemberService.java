@@ -27,7 +27,7 @@ public class WebMemberService {
     }
 
     @Transactional(readOnly = true)
-    public boolean validateLoginByMemberLoginForm(MemberLoginForm form) {
+    public Optional<Long> validateLoginByMemberLoginForm(MemberLoginForm form) {
         return validateLogin(form.getEmail(), form.getPassword());
     }
 
@@ -39,14 +39,15 @@ public class WebMemberService {
         }
     }
 
-    private boolean validateLogin(String email, String rawPassword) {
+    private Optional<Long> validateLogin(String email, String rawPassword) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
-            return encoder.matches(rawPassword, member.getPassword());
-        } else {
-            return false;
+            if (encoder.matches(rawPassword, member.getPassword())) {
+                return Optional.of(member.getId());
+            }
         }
+        return Optional.empty();
     }
 
     private boolean validateJoin(String email, String nickname) {

@@ -1,7 +1,5 @@
 package kr.hamburgersee.web.service;
 
-import kr.hamburgersee.domain.Member;
-import kr.hamburgersee.repository.MemberRepository;
 import kr.hamburgersee.web.dto.member.MemberJoinForm;
 import kr.hamburgersee.web.dto.member.MemberLoginForm;
 import org.assertj.core.api.Assertions;
@@ -21,8 +19,6 @@ class WebMemberServiceTest {
 
     @Autowired
     private WebMemberService webMemberService;
-    @Autowired
-    private MemberRepository memberRepository;
 
     @Test
     void validateLoginByMemberLoginForm() {
@@ -36,6 +32,6 @@ class WebMemberServiceTest {
         loginForm.setPassword(PASSWORD);
 
         webMemberService.joinByMemberJoinForm(joinForm);
-        Assertions.assertThat(webMemberService.validateLoginByMemberLoginForm(loginForm)).isTrue();
+        Assertions.assertThat(webMemberService.validateLoginByMemberLoginForm(loginForm)).isPresent();
     }
 }

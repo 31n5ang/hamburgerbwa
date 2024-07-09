@@ -1,13 +1,14 @@
 package kr.hamburgersee.domain.base;
 
 import jakarta.persistence.Embeddable;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+@Data
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Likable {
-    @ColumnDefault("0")
-    private int likes;
-
-    @ColumnDefault("0")
-    private int dislikes;
+    private Integer likes;
+    private Integer dislikes;
 }

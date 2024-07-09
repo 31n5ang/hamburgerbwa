@@ -24,7 +24,7 @@ public class Board {
     private String content;
 
     @Embedded
-    private Likable likable;
+    private Likable likable = new Likable(0, 0);
 
     @Embedded
     private At at;
