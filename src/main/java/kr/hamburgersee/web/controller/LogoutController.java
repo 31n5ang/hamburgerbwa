@@ -13,10 +13,10 @@ public class LogoutController {
     @GetMapping("/logout")
     public String logout(
             HttpServletRequest request,
-            @RequestParam String redirect
+            @RequestParam(defaultValue = "/", required = false) String redirect
     ) {
         HttpSession session = request.getSession(false);
         session.invalidate();
-        return "redirect:/" + redirect;
+        return "redirect:" + redirect;
     }
 }

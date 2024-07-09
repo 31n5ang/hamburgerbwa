@@ -28,15 +28,16 @@ public class LoginController {
     @PostMapping("/login")
     public String login(
             HttpServletRequest request,
-            @RequestParam String redirect,
+            @RequestParam(defaultValue = "/", required = false) String redirect,
             @Valid @ModelAttribute("form") MemberLoginForm form,
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors() || !webMemberService.validateLoginByMemberLoginForm(form)) {
             return LOGIN_FORM_PATH;
         }
+        log.info("redirect={}", redirect);
         HttpSession session = request.getSession(true);
         session.setAttribute(WebConst.SESSION_LOGIN_MEMBER, form.getEmail());
-        return "redirect:/" + redirect;
+        return "redirect:" + redirect;
     }
 }
