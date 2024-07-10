@@ -1,9 +1,7 @@
 package kr.hamburgersee.web.service;
 
-import jakarta.servlet.http.HttpSession;
 import kr.hamburgersee.domain.Member;
 import kr.hamburgersee.repository.MemberRepository;
-import kr.hamburgersee.web.WebConst;
 import kr.hamburgersee.web.dto.member.MemberJoinForm;
 import kr.hamburgersee.web.dto.member.MemberLoginForm;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +31,8 @@ public class WebMemberService {
 
     private Optional<Long> join(Member member) {
         if (validateJoin(member.getEmail(), member.getNickname())) {
-            return Optional.of(memberRepository.save(member));
+            Member savedMember = memberRepository.save(member);
+            return Optional.of(savedMember.getId());
         } else {
             return Optional.empty();
         }

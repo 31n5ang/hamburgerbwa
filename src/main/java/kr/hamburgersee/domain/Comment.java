@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import kr.hamburgersee.domain.base.At;
 import kr.hamburgersee.domain.base.Likable;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +33,11 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public Comment(String content, Likable likable, Board board, Member member) {
+        this.content = content;
+        this.likable = likable;
+        this.board = board;
+        this.member = member;
+    }
 }

@@ -1,20 +1,13 @@
 package kr.hamburgersee.repository;
 
 import kr.hamburgersee.domain.Member;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository {
-    Long save(Member member);
-
-    Optional<Member> findById(Long memberId);
-
+public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
 
     Optional<Member> findByNickname(String nickname);
-
-    List<Member> findAll();
 }

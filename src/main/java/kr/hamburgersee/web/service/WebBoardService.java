@@ -26,9 +26,11 @@ public class WebBoardService {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
         if (optionalMember.isEmpty()) return Optional.empty();
 
-        Board board = getBoardByBoardWriteForm(boardWriteForm, optionalMember);
+        Board board = getBoardByBoardWriteForm(boardWriteForm, optionalMember.get());
 
-        return Optional.of(boardRepository.save(board));
+        Board savedBoard = boardRepository.save(board);
+
+        return Optional.of(savedBoard.getId());
     }
 
     @Transactional(readOnly = true)
@@ -45,11 +47,11 @@ public class WebBoardService {
         return optionalBoard.map(this::getBoardDtoByBoard);
     }
 
-    private Board getBoardByBoardWriteForm(BoardWriteForm boardWriteForm, Optional<Member> optionalMember) {
+    private Board getBoardByBoardWriteForm(BoardWriteForm boardWriteForm, Member member) {
         Board board = new Board(
                 boardWriteForm.getTitle(),
                 boardWriteForm.getContent(),
-                optionalMember.get()
+                member
         );
         return board;
     }
