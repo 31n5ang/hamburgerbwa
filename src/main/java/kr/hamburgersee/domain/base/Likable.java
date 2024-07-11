@@ -11,4 +11,8 @@ import org.hibernate.annotations.ColumnDefault;
 public class Likable {
     private Integer likes;
     private Integer dislikes;
+
+    public static Likable defaultValue() {
+        return new Likable(0, 0);
+    }
 }

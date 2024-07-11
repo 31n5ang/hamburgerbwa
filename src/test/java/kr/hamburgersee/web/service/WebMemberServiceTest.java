@@ -1,14 +1,12 @@
 package kr.hamburgersee.web.service;
 
-import kr.hamburgersee.web.dto.member.MemberJoinForm;
-import kr.hamburgersee.web.dto.member.MemberLoginForm;
+import kr.hamburgersee.dto.member.MemberJoinForm;
+import kr.hamburgersee.dto.member.MemberLoginForm;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

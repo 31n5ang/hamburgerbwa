@@ -2,11 +2,11 @@ package kr.hamburgersee.web.controller;
 
 import jakarta.validation.Valid;
 import kr.hamburgersee.web.WebConst;
-import kr.hamburgersee.web.dto.MemberSessionInfo;
-import kr.hamburgersee.web.dto.board.BoardDto;
-import kr.hamburgersee.web.dto.board.BoardWriteForm;
-import kr.hamburgersee.web.dto.comment.CommentDto;
-import kr.hamburgersee.web.dto.comment.CommentWriteForm;
+import kr.hamburgersee.dto.MemberSessionInfo;
+import kr.hamburgersee.dto.board.BoardDto;
+import kr.hamburgersee.dto.board.BoardWriteForm;
+import kr.hamburgersee.dto.comment.CommentDto;
+import kr.hamburgersee.dto.comment.CommentWriteForm;
 import kr.hamburgersee.web.service.WebBoardService;
 import kr.hamburgersee.web.service.WebCommentService;
 import lombok.RequiredArgsConstructor;
@@ -44,10 +44,11 @@ public class BoardController {
             return "redirect:/board/list";
         } else {
             List<CommentDto> commentDtos = webCommentService.findCommentDtosByBoardId(boardId);
+
             model.addAttribute("memberId", memberSessionInfo.getMemberId());
             model.addAttribute("boardId", boardId);
+
             model.addAttribute("boardDto", optionalBoardDto.get());
-            model.addAttribute("commentWriteForm", new CommentWriteForm());
             model.addAttribute("commentDtos", commentDtos);
 
             return "board/content";
@@ -71,11 +72,11 @@ public class BoardController {
             return "board/boardForm";
         }
 
-        BoardDto boardDto = new BoardDto(
-                boardWriteForm.getTitle(),
-                boardWriteForm.getContent(),
-                memberSessionInfo.getMemberId()
-        );
+        BoardDto boardDto = BoardDto.builder()
+                .content(boardWriteForm.getContent())
+                .title(boardWriteForm.getTitle())
+                .memberId(memberSessionInfo.getMemberId())
+                .build();
 
         Optional<Long> optionalWrittenBoardId = webBoardService.write(boardDto);
 
@@ -85,32 +86,6 @@ public class BoardController {
         } else {
             // 정상적으로 저장되었다면
             return "redirect:/board/list";
-        }
-    }
-
-    @PostMapping("/comment")
-    public String comment(
-            @RequestParam Long memberId,
-            @RequestParam Long boardId,
-            @Valid @ModelAttribute CommentWriteForm commentWriteForm,
-            BindingResult bindingResult
-    ) {
-        if (bindingResult.hasErrors()) {
-            // 폼 양식을 잘못 입력하였다면 돌아가기
-            return "board/list/" + boardId;
-        }
-
-        CommentDto commentDto = new CommentDto(
-                memberId, boardId, commentWriteForm.getContent(), commentWriteForm.getMemberNickname()
-        );
-
-        Optional<Long> optionalWrittenCommentId = webCommentService.writeCommentByCommentWriteForm(commentDto);
-        if (optionalWrittenCommentId.isEmpty()) {
-            // 정상적으로 저장되어지지 않았다면
-            return "board/list/" + boardId;
-        } else {
-            // 정상적으로 저장되었다면
-            return "redirect:/board/list/" + boardId;
         }
     }
 }

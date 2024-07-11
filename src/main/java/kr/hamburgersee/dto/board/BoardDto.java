@@ -1,15 +1,20 @@
-package kr.hamburgersee.web.dto.board;
+package kr.hamburgersee.dto.board;
 
 import jakarta.validation.constraints.NotNull;
+import kr.hamburgersee.domain.Board;
+import kr.hamburgersee.domain.BoardStatus;
+import kr.hamburgersee.domain.Member;
 import kr.hamburgersee.domain.base.At;
 import kr.hamburgersee.domain.base.Likable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class BoardDto {
     private Long boardId;
     @NotNull
@@ -18,20 +23,8 @@ public class BoardDto {
     private String content;
     private Likable likable;
     private At at;
+    private BoardStatus status;
 
     private Long memberId;
     private String nickname;
-
-    public BoardDto(String title, String content, Long memberId) {
-        this.title = title;
-        this.content = content;
-        this.memberId = memberId;
-    }
-
-    public BoardDto(String title, String content, Long memberId, String nickname) {
-        this.title = title;
-        this.content = content;
-        this.memberId = memberId;
-        this.nickname = nickname;
-    }
 }

@@ -16,13 +16,7 @@
     </div>
 </table>
 
-<form th:method="post" style="border: 1px solid lightgrey"
-      th:action="@{/board/comment(memberId=${memberId}, boardId=${boardId})}"
-      th:object="${commentWriteForm}">
-    <label th:for="*{content}" th:text="*{memberNickname}">닉네임</label>
-    <textarea th:name="*{content}" th:field="*{content}" placeholder="댓글을 작성해주세요." style="resize: none"></textarea>
-    <button type="submit">작성하기</button>
-</form>
+<p th:onclick="|location.href='@{/comment(memberId=${memberId}, boardId=${boardId})}'|">댓글 작성하기</p>
 
 <table style="border: 1px solid lightblue">
     <tr th:each="comment : ${commentDtos}">

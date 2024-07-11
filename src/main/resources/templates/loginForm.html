@@ -2,18 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>로그인</title>
 </head>
 <body>
+<div class="container" style="max-width: 600px">
+    <h4 class="my-4">둘러보려면 로그인이 필요해요.</h4>
+    <hr class="my-4" />
     <form method="post" th:object="${form}" th:action>
-        <label th:for="*{email}">이메일</label>
-        <input type="email" th:name="*{email}" th:field="*{email}">
+        <div class="my-2">
+            <label th:for="*{email}" class="col-form-label">이메일</label>
+            <input type="email" th:name="*{email}" th:field="*{email}" class="form-control">
+        </div>
+        <div class="my-2">
+            <label th:for="*{password}" class="col-form-label">비밀번호</label>
+            <input type="password" th:name="*{password}" th:field="*{password}" class="form-control">
+        </div>
 
-        <label th:for="*{password}">비밀번호</label>
-        <input type="password" th:name="*{password}" th:field="*{password}">
-
-        <button>로그인</button>
+        <button class="my-4 btn btn-primary btn-block">선수 입장</button>
     </form>
-    <p th:onclick="|location.href='@{/join}'|">가입</p>
+    <a href="/join">아직 함버거봐의 동료가 아니신가요?</a>
+</div>
 </body>
 </html>

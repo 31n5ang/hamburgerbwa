@@ -1,13 +1,12 @@
 package kr.hamburgersee.domain;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.Member;
 import kr.hamburgersee.domain.base.At;
 import kr.hamburgersee.domain.base.Likable;
+import kr.hamburgersee.dto.board.BoardDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,9 @@ public class Board {
 
     @Column(nullable = false)
     private String content;
+
+    @Enumerated(EnumType.STRING)
+    private BoardStatus status;
 
     @Embedded
     private Likable likable = new Likable(0, 0);
@@ -45,4 +47,34 @@ public class Board {
         this.content = content;
         this.member = member;
     }
+
+    // DTO 변환 메소드
+    public static BoardDto getBoardDto(Board board) {
+        return new BoardDto(
+                board.getId(),
+                board.getTitle(),
+                board.getContent(),
+                new Likable(
+                        board.getLikable().getLikes(),
+                        board.getLikable().getDislikes()
+                ),
+                new At(
+                        board.getAt().getCreatedAt(),
+                        board.getAt().getUpdatedAt()
+                ),
+                board.getStatus(),
+                board.getMember().getId(),
+                board.getMember().getNickname()
+        );
+    }
+
+    public static Board getBoard(BoardDto boardDto, Member member) {
+        return new Board(
+                boardDto.getTitle(),
+                boardDto.getContent(),
+                member
+        );
+    }
+
+    //
 }

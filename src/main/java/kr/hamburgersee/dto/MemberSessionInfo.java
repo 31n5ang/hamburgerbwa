@@ -1,4 +1,4 @@
-package kr.hamburgersee.web.dto;
+package kr.hamburgersee.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

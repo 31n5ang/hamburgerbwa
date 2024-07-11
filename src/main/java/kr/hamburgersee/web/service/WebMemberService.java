@@ -2,8 +2,8 @@ package kr.hamburgersee.web.service;
 
 import kr.hamburgersee.domain.Member;
 import kr.hamburgersee.repository.MemberRepository;
-import kr.hamburgersee.web.dto.member.MemberJoinForm;
-import kr.hamburgersee.web.dto.member.MemberLoginForm;
+import kr.hamburgersee.dto.member.MemberJoinForm;
+import kr.hamburgersee.dto.member.MemberLoginForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,6 +63,7 @@ public class WebMemberService {
         return optionalMember.isEmpty();
     }
 
+    // Form은 최종적으로 View에 전달하기 위함이므로, 엔티티(domain)에 변환 로직을 위임하지 않는 것이 좋아보입니다.
     private Member getMemberByJoinForm(MemberJoinForm form) {
         return new Member(
                 form.getEmail(),

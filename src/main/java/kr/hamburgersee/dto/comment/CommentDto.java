@@ -1,4 +1,4 @@
-package kr.hamburgersee.web.dto.comment;
+package kr.hamburgersee.dto.comment;
 
 import kr.hamburgersee.domain.base.At;
 import kr.hamburgersee.domain.base.Likable;

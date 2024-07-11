@@ -1,4 +1,4 @@
-package kr.hamburgersee.web.dto.member;
+package kr.hamburgersee.dto.member;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

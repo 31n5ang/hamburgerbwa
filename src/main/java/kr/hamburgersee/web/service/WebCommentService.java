@@ -7,8 +7,7 @@ import kr.hamburgersee.domain.base.Likable;
 import kr.hamburgersee.repository.BoardRepository;
 import kr.hamburgersee.repository.CommentRepository;
 import kr.hamburgersee.repository.MemberRepository;
-import kr.hamburgersee.web.dto.comment.CommentDto;
-import kr.hamburgersee.web.dto.comment.CommentWriteForm;
+import kr.hamburgersee.dto.comment.CommentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,17 +22,23 @@ public class WebCommentService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     @Transactional
-    public Optional<Long> writeCommentByCommentWriteForm(CommentDto commentDto) {
+    public Optional<Long> write(CommentDto commentDto) {
         Optional<Member> optionalMember = memberRepository.findById(commentDto.getMemberId());
         Optional<Board> optionalBoard = boardRepository.findById(commentDto.getBoardId());
+
         if (optionalMember.isEmpty() || optionalBoard.isEmpty()) {
+            // 코멘트를 남길 멤버나 게시판을 조회할 수 없다면 실패합니다.
             return Optional.empty();
         }
+
+        Member member = optionalMember.get();
+        Board board = optionalBoard.get();
+
         Comment comment = new Comment(
                 commentDto.getContent(),
-                new Likable(0, 0),
-                optionalBoard.get(),
-                optionalMember.get()
+                Likable.defaultValue(),
+                board,
+                member
         );
 
         Comment savedComment = commentRepository.save(comment);
@@ -45,19 +50,7 @@ public class WebCommentService {
     public List<CommentDto> findCommentDtosByBoardId(Long boardId) {
         List<Comment> comments = commentRepository.findAllByBoardId(boardId);
         return comments.stream()
-                .map(this::getCommentDtoByComment)
+                .map(Comment::getCommentDto)
                 .toList();
-    }
-
-    private CommentDto getCommentDtoByComment(Comment comment) {
-        return new CommentDto(
-                comment.getId(),
-                comment.getMember().getId(),
-                comment.getBoard().getId(),
-                comment.getContent(),
-                comment.getMember().getNickname(),
-                comment.getLikable(),
-                comment.getAt()
-        );
     }
 }
