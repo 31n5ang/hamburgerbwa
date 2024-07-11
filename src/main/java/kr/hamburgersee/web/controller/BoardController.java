@@ -57,7 +57,7 @@ public class BoardController {
     @GetMapping("/write")
     public String boardWriteForm(Model model) {
         model.addAttribute("form", new BoardWriteForm());
-        return "board/writeForm";
+        return "board/boardForm";
     }
 
     @PostMapping("/write")
@@ -68,15 +68,20 @@ public class BoardController {
     ) {
         if (bindingResult.hasErrors()) {
             // 폼 양식을 잘못 입력하였다면 돌아가기
-            return "board/writeForm";
+            return "board/boardForm";
         }
 
-        Optional<Long> optionalWrittenBoardId =
-                webBoardService.writeBoardByBoardWriteForm(memberSessionInfo.getMemberId(), boardWriteForm);
+        BoardDto boardDto = new BoardDto(
+                boardWriteForm.getTitle(),
+                boardWriteForm.getContent(),
+                memberSessionInfo.getMemberId()
+        );
+
+        Optional<Long> optionalWrittenBoardId = webBoardService.write(boardDto);
 
         if (optionalWrittenBoardId.isEmpty()) {
             // 정상적으로 저장되어지지 않았다면
-            return "board/writeForm";
+            return "board/boardForm";
         } else {
             // 정상적으로 저장되었다면
             return "redirect:/board/list";
@@ -94,9 +99,12 @@ public class BoardController {
             // 폼 양식을 잘못 입력하였다면 돌아가기
             return "board/list/" + boardId;
         }
-        commentWriteForm.setBoardId(boardId);
-        commentWriteForm.setMemberId(memberId);
-        Optional<Long> optionalWrittenCommentId = webCommentService.writeCommentByCommentWriteForm(commentWriteForm);
+
+        CommentDto commentDto = new CommentDto(
+                memberId, boardId, commentWriteForm.getContent(), commentWriteForm.getMemberNickname()
+        );
+
+        Optional<Long> optionalWrittenCommentId = webCommentService.writeCommentByCommentWriteForm(commentDto);
         if (optionalWrittenCommentId.isEmpty()) {
             // 정상적으로 저장되어지지 않았다면
             return "board/list/" + boardId;

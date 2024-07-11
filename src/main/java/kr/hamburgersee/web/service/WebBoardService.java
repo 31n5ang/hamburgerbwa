@@ -22,14 +22,14 @@ public class WebBoardService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Optional<Long> writeBoardByBoardWriteForm(Long memberId, BoardWriteForm boardWriteForm) {
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+    public Optional<Long> write(BoardDto boardDto) {
+        Optional<Member> optionalMember = memberRepository.findById(boardDto.getMemberId());
+
+        // 작성자가 비어있다면 실패합니다.
         if (optionalMember.isEmpty()) return Optional.empty();
 
-        Board board = getBoardByBoardWriteForm(boardWriteForm, optionalMember.get());
-
+        Board board = getBoardByBoardDtoAndMember(boardDto, optionalMember.get());
         Board savedBoard = boardRepository.save(board);
-
         return Optional.of(savedBoard.getId());
     }
 
@@ -47,13 +47,12 @@ public class WebBoardService {
         return optionalBoard.map(this::getBoardDtoByBoard);
     }
 
-    private Board getBoardByBoardWriteForm(BoardWriteForm boardWriteForm, Member member) {
-        Board board = new Board(
-                boardWriteForm.getTitle(),
-                boardWriteForm.getContent(),
+    private Board getBoardByBoardDtoAndMember(BoardDto boardDto, Member member) {
+        return new Board(
+                boardDto.getTitle(),
+                boardDto.getContent(),
                 member
         );
-        return board;
     }
 
     private BoardDto getBoardDtoByBoard(Board board) {

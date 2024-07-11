@@ -35,7 +35,7 @@ public class LoginController {
             @Valid @ModelAttribute("form") MemberLoginForm form,
             BindingResult bindingResult
     ) {
-        Optional<Long> optionalMemberId = webMemberService.validateLoginByMemberLoginForm(form);
+        Optional<Long> optionalMemberId = webMemberService.loginByMemberLoginForm(form);
 
         if (bindingResult.hasErrors() || optionalMemberId.isEmpty()) {
             return LOGIN_FORM_PATH;

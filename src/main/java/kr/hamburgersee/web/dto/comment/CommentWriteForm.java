@@ -13,6 +13,4 @@ public class CommentWriteForm {
     @NotBlank
     private String content;
     private String memberNickname;
-    private Long boardId;
-    private Long memberId;
 }

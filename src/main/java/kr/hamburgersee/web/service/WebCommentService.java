@@ -23,14 +23,14 @@ public class WebCommentService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     @Transactional
-    public Optional<Long> writeCommentByCommentWriteForm(CommentWriteForm commentWriteForm) {
-        Optional<Member> optionalMember = memberRepository.findById(commentWriteForm.getMemberId());
-        Optional<Board> optionalBoard = boardRepository.findById(commentWriteForm.getBoardId());
+    public Optional<Long> writeCommentByCommentWriteForm(CommentDto commentDto) {
+        Optional<Member> optionalMember = memberRepository.findById(commentDto.getMemberId());
+        Optional<Board> optionalBoard = boardRepository.findById(commentDto.getBoardId());
         if (optionalMember.isEmpty() || optionalBoard.isEmpty()) {
             return Optional.empty();
         }
         Comment comment = new Comment(
-                commentWriteForm.getContent(),
+                commentDto.getContent(),
                 new Likable(0, 0),
                 optionalBoard.get(),
                 optionalMember.get()
@@ -52,6 +52,8 @@ public class WebCommentService {
     private CommentDto getCommentDtoByComment(Comment comment) {
         return new CommentDto(
                 comment.getId(),
+                comment.getMember().getId(),
+                comment.getBoard().getId(),
                 comment.getContent(),
                 comment.getMember().getNickname(),
                 comment.getLikable(),

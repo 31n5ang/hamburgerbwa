@@ -21,12 +21,12 @@ public class WebMemberService {
 
     @Transactional
     public boolean joinByMemberJoinForm(MemberJoinForm form) {
-        return join(new Member(form.getEmail(), encoder.encode(form.getPassword()), form.getNickname())).isPresent();
+        return join(getMemberByJoinForm(form)).isPresent();
     }
 
     @Transactional(readOnly = true)
-    public Optional<Long> validateLoginByMemberLoginForm(MemberLoginForm form) {
-        return validateLogin(form.getEmail(), form.getPassword());
+    public Optional<Long> loginByMemberLoginForm(MemberLoginForm form) {
+        return validateAndLogin(form.getEmail(), form.getPassword());
     }
 
     private Optional<Long> join(Member member) {
@@ -38,7 +38,7 @@ public class WebMemberService {
         }
     }
 
-    private Optional<Long> validateLogin(String email, String rawPassword) {
+    private Optional<Long> validateAndLogin(String email, String rawPassword) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
@@ -61,5 +61,12 @@ public class WebMemberService {
     private boolean validateUniqueNickname(String nickname) {
         Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
         return optionalMember.isEmpty();
+    }
+
+    private Member getMemberByJoinForm(MemberJoinForm form) {
+        return new Member(
+                form.getEmail(),
+                encoder.encode(form.getPassword()),
+                form.getNickname());
     }
 }

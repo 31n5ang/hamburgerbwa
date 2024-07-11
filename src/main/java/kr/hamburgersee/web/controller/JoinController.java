@@ -30,8 +30,6 @@ public class JoinController {
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors() || !webMemberService.joinByMemberJoinForm(form)) {
-            log.info("가입 실패");
-            log.info(bindingResult.getAllErrors().toString());
             return JOIN_FORM_PATH;
         }
         return "redirect:/";

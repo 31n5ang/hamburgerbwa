@@ -8,8 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class BoardDto {
     private Long boardId;
     @NotNull
@@ -21,4 +21,17 @@ public class BoardDto {
 
     private Long memberId;
     private String nickname;
+
+    public BoardDto(String title, String content, Long memberId) {
+        this.title = title;
+        this.content = content;
+        this.memberId = memberId;
+    }
+
+    public BoardDto(String title, String content, Long memberId, String nickname) {
+        this.title = title;
+        this.content = content;
+        this.memberId = memberId;
+        this.nickname = nickname;
+    }
 }
