@@ -1,5 +1,5 @@
 package kr.hamburgersee.domain;
 
-public enum BoardStatus {
+public enum CommentStatus {
     SHOW, HIDE, DELETED
 }

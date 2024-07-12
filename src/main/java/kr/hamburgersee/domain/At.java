@@ -1,16 +1,14 @@
-package kr.hamburgersee.domain.base;
+package kr.hamburgersee.domain;
 
 import jakarta.persistence.Embeddable;
-import lombok.*;
+import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @Embeddable
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class At {
     @CreationTimestamp
     private LocalDateTime createdAt;
