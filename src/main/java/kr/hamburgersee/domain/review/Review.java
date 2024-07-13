@@ -1,10 +1,9 @@
-package kr.hamburgersee.domain.entity;
+package kr.hamburgersee.domain.review;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.At;
-import kr.hamburgersee.domain.RegionType;
-import kr.hamburgersee.domain.ReviewStatus;
-import kr.hamburgersee.domain.ReviewTagType;
+import kr.hamburgersee.domain.common.At;
+import kr.hamburgersee.domain.common.RegionType;
+import kr.hamburgersee.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,28 +49,26 @@ public class Review {
 
     // 생성자
     private Review(RegionType regionValue, String shopName, String title, String content,
-                   ReviewStatus status, List<ReviewTag> tags,
+                   ReviewStatus status,
                    int good, Member member) {
         this.regionValue = regionValue;
         this.shopName = shopName;
         this.title = title;
         this.content = content;
         this.status = status;
-        this.tags = tags;
         this.good = good;
         this.member = member;
     }
 
     // 팩토리 메소드
     public static Review createNewReview(RegionType regionValue, String shopName, String title, String content,
-                                         List<ReviewTag> tags, Member member) {
+                                         Member member) {
         return new Review(
                 regionValue,
                 shopName,
                 title,
                 content,
                 ReviewStatus.SHOW,
-                tags,
                 0,
                 member
         );
@@ -79,8 +76,10 @@ public class Review {
 
     // 편의 메소드
     public void attachReviewTags(List<ReviewTagType> reviewTagTypes) {
+        List<ReviewTag> tags = new ArrayList<>();
         for (ReviewTagType reviewTagType : reviewTagTypes) {
-            this.getTags().add(ReviewTag.createNewReviewTag(reviewTagType));
+            tags.add(ReviewTag.createNewReviewTag(this, reviewTagType));
         }
+        this.tags = tags;
     }
 }

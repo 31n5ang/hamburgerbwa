@@ -1,10 +1,8 @@
-package kr.hamburgersee.domain.entity;
+package kr.hamburgersee.domain.member;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.At;
-import kr.hamburgersee.domain.GenderType;
-import kr.hamburgersee.domain.RegionType;
-import kr.hamburgersee.domain.RolesType;
+import kr.hamburgersee.domain.common.At;
+import kr.hamburgersee.domain.common.RegionType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

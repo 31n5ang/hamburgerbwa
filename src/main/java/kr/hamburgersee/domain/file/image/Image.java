@@ -1,7 +1,7 @@
-package kr.hamburgersee.domain.entity.image;
+package kr.hamburgersee.domain.file.image;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.At;
+import kr.hamburgersee.domain.common.At;
 
 @MappedSuperclass
 public abstract class Image {

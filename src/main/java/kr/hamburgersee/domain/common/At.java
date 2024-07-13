@@ -1,4 +1,4 @@
-package kr.hamburgersee.domain;
+package kr.hamburgersee.domain.common;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

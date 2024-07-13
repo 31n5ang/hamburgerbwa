@@ -1,4 +1,4 @@
-package kr.hamburgersee.domain;
+package kr.hamburgersee.domain.review;
 
 public enum ReviewTagType {
     BEEF("소고기"),

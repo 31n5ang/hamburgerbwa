@@ -1,4 +1,4 @@
-package kr.hamburgersee.domain;
+package kr.hamburgersee.domain.common;
 
 public enum RegionType {
     ETC("기타"),

@@ -1,7 +1,7 @@
-package kr.hamburgersee.domain.entity.image;
+package kr.hamburgersee.domain.file.image;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.entity.Member;
+import kr.hamburgersee.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

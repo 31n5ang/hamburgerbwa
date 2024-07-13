@@ -1,8 +1,7 @@
-package kr.hamburgersee.domain.entity;
+package kr.hamburgersee.domain.comment;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.At;
-import kr.hamburgersee.domain.CommentStatus;
+import kr.hamburgersee.domain.common.At;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

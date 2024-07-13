@@ -1,7 +1,6 @@
-package kr.hamburgersee.domain.entity;
+package kr.hamburgersee.domain.review;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.ReviewTagType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,19 +13,21 @@ public class ReviewTag {
     @Column(name = "review_tag_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private ReviewTagType tagType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "review_id")
     private Review review;
 
     // 생성자
-    private ReviewTag(ReviewTagType tagType) {
+    private ReviewTag(Review review, ReviewTagType tagType) {
+        this.review = review;
         this.tagType = tagType;
     }
 
     // 팩토리 메소드
-    public static ReviewTag createNewReviewTag(ReviewTagType reviewTagType) {
-        return new ReviewTag(reviewTagType);
+    public static ReviewTag createNewReviewTag(Review review, ReviewTagType reviewTagType) {
+        return new ReviewTag(review, reviewTagType);
     }
 }
