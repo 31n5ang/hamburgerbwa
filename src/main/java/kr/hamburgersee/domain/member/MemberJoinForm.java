@@ -32,7 +32,7 @@ public class MemberJoinForm {
 
     // 팩토리 메소드
     // 성별과 지역의 기본값을 설정한 빈 객체를 생성하는 메소드이다.
-    public static MemberJoinForm createNewDefaultForm() {
+    public static MemberJoinForm createDefaultEmpty() {
         return new MemberJoinForm(RegionType.ETC, GenderType.NONE);
     }
 }

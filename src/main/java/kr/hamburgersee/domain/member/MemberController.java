@@ -21,7 +21,7 @@ public class MemberController {
 
     @GetMapping("/join")
     public String getJoin(Model model) {
-        model.addAttribute("form", MemberJoinForm.createNewDefaultForm());
+        model.addAttribute("form", MemberJoinForm.createDefaultEmpty());
         return JOIN_FORM_PATH;
     }
 
