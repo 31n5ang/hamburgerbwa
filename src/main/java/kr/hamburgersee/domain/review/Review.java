@@ -61,7 +61,7 @@ public class Review {
     }
 
     // 팩토리 메소드
-    public static Review createNewReview(RegionType regionValue, String shopName, String title, String content,
+    public static Review create(RegionType regionValue, String shopName, String title, String content,
                                          Member member) {
         return new Review(
                 regionValue,
@@ -78,7 +78,7 @@ public class Review {
     public void attachReviewTags(List<ReviewTagType> reviewTagTypes) {
         List<ReviewTag> tags = new ArrayList<>();
         for (ReviewTagType reviewTagType : reviewTagTypes) {
-            tags.add(ReviewTag.createNewReviewTag(this, reviewTagType));
+            tags.add(ReviewTag.create(this, reviewTagType));
         }
         this.tags = tags;
     }

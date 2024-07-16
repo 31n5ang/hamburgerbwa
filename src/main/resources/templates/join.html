@@ -2,10 +2,11 @@
 <html th:replace="~{layout/simpleLayout :: layout(~{::title}, ~{::article}, ~{::link})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>함버거봐</title>
+    <title>회원가입</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
-<article>
-    메인이야
+<article style="max-width: 600px">
+    <div th:replace="layout/fragments/member/join :: form">회원가입 폼</div>
 </article>
 </html>

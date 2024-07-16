@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
-</head>
 <div th:fragment="form">
     <div class="container">
         <form th:acion method="post" th:object="${form}">
@@ -36,6 +32,7 @@
                 </select>
                 <p th:errors="*{region}" th:class="form-error">지연 선택 오류</p>
             </div>
+
             <div th:class="form-group">
                 <div th:each="genderOpt : ${T(kr.hamburgersee.domain.member.GenderType).values()}" th:class="form-check">
                     <input type="radio" th:field="*{gender}" th:name="*{gender}" th:value="${genderOpt.name()}"

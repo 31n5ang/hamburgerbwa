@@ -56,7 +56,7 @@ public class Member {
     }
 
     // 팩토리 메소드
-    public static Member createNewMember(String email, String encPassword, String nickname, RegionType region,
+    public static Member create(String email, String encPassword, String nickname, RegionType region,
                                GenderType gender,
                            String bio) {
         return new Member(email, encPassword, nickname, region, gender, bio);

@@ -27,7 +27,7 @@ public class ReviewTag {
     }
 
     // 팩토리 메소드
-    public static ReviewTag createNewReviewTag(Review review, ReviewTagType reviewTagType) {
+    public static ReviewTag create(Review review, ReviewTagType reviewTagType) {
         return new ReviewTag(review, reviewTagType);
     }
 }
