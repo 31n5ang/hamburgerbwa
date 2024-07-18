@@ -31,6 +31,7 @@
             <div class="form-group">
                 <!--toast-ui editor-->
                 <p class="col-form-label-lg" th:text="|*#{form.label.review.content}|"></p>
+                <p th:errors="*{content}" th:class="form-error">본문</p>
                 <div id="content"></div>
                 <input type="hidden" name="content" value="" id="content-field">
                 <input type="hidden" name="allImageUrls" value="" id="all-image-urls">
@@ -49,7 +50,8 @@
                     th:text="#{form.btn.review.create.submit}">작성하기</button>
         </form>
     </div>
-    <script>
+    <script th:inline="javascript">
+        const initialContent = /*[[${form.content} != null ? ${form.content} : '']]*/;
         const allImageUrls = [];
 
         const editor = new toastui.Editor({
@@ -57,6 +59,7 @@
             height: '500px',
             initialEditType: 'wysiwyg',
             previewStyle: 'vertical',
+            initialValue: initialContent,
             hooks: {
                 addImageBlobHook: async (blob, callback) => {
                     // 클라이언트 로컬 저장소에 이미지 임시 저장
@@ -90,4 +93,30 @@
         }
     </script>
 </div>
+<div th:fragment="review">
+    <div class="container">
+        <div class="text-right">
+            <span th:text="닉네임" class="p-2 badge bg-primary text-white">닉네임</span>
+        </div>
+        <div class="h3">
+            <span th:text="${review.region.displayName}" class="badge bg-secondary text-white"></span>
+            <span th:text="${review.title}">제목</span>
+        </div>
+        <div class="shadow-sm my-4 border rounded p-3 review-content">
+            <div th:utext="${review.content}">본문</div>
+            <hr />
+            <div class="text-center">
+                <span th:text="#{label.review.good}">좋아요</span><br />
+                <span th:text="${review.good}" class="h3">0</span>
+            </div>
+        </div>
+        <div class="shadow-sm my-4 border rounded p-3 text-center">
+            <div th:if="${#lists.isEmpty(review.tags)}">버거 태그가 존재하지 않습니다.</div>
+            <span th:each="tag : ${review.tags}" class="h4 badge bg-info p-1 m-1 text-white"
+                  th:text="${tag.displayName}">
+            </span>
+        </div>
+    </div>
+</div>
 </html>
+

@@ -17,7 +17,7 @@ import static kr.hamburgersee.domain.member.MemberConst.*;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    private final String JOIN_FORM_PATH = "join";
+    private static final String JOIN_FORM_PATH = "join";
 
     @GetMapping("/join")
     public String getJoin(Model model) {

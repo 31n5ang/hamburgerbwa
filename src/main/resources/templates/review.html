@@ -2,9 +2,9 @@
 <html th:replace="~{layout/simpleLayout :: layout(~{::title}, ~{::article})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>리뷰 테스트</title>
+    <title>함버거봐 - 리뷰</title>
 </head>
-<article style="max-width: 600px">
-    <div th:replace="layout/fragments/review/review :: form">회원가입 폼</div>
+<article style="max-width: 700px; margin: auto">
+    <div th:replace="layout/fragments/review/review :: review">리뷰</div>
 </article>
 </html>
