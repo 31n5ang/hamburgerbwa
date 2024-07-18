@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="toast-ui-input">
+    <div id="content"></div>
+    <input type="hidden" th:name="content" id="contentField">
+    <script>
+        const editor = new toastui.Editor({
+            el: document.querySelector('#content'),
+            height: '500px',
+            initialEditType: 'wysiwyg',
+            initialValue: '멋진 리뷰를 작성해주세요.',
+            previewStyle: 'vertical',
+            /* hook */
+            hooks: {
+                addImageBlobHook: async (blob, callback) => {
+                    const formData = new FormData();
+                    formData.append('file', blob);
+                    try {
+                        const response = await fetch('/uploadImage', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            const imageUrl = await response.text();
+                            console.log(imageUrl);
+                            callback(imageUrl, 'image');
+                        } else {
+                            alert('이미지 업로드에 실패했습니다. 잠시 후 다시 시도해주세요!');
+                        }
+                    } catch (error) {
+                        alert('이미지 업로드에 실패했습니다. 잠시 후 다시 시도해주세요!');
+                    }
+                }
+            }
+        });
+
+
+    </script>
+</div>
+</html>
