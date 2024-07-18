@@ -18,7 +18,10 @@ public class ReviewService {
                 form.getContent(),
                 null
         );
+        review.attachReviewTags(form.getTagTypes());
+
         Review savedReview = reviewRepository.save(review);
+
         return savedReview.getId();
     }
 }
