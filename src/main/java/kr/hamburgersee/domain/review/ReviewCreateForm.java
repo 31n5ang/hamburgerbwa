@@ -27,4 +27,6 @@ public class ReviewCreateForm {
     private List<ReviewTagType> tagTypes = new ArrayList<>();
 
     private Long memberId;
+
+    private List<String> allImageUrls;
 }

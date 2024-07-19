@@ -1,7 +1,6 @@
 package kr.hamburgersee.domain.file.image;
 
 import kr.hamburgersee.domain.aws.storage.StorageService;
-import kr.hamburgersee.domain.aws.storage.StorageUploadFileType;
 import kr.hamburgersee.domain.file.FileUtils;
 import kr.hamburgersee.domain.review.Review;
 import kr.hamburgersee.domain.review.ReviewRepository;
@@ -47,7 +46,7 @@ public class ReviewImageService {
 
     @Transactional
     public void deleteOrphanedReviewImages() {
-        // TODO : 이미지 생성으로부터 24시간(미정)이 지나도 review_id가 부착이 안되어있다면 삭제 고려
+        // TODO : 이미지 생성으로부터 7일이 지나도 review_id가 부착이 안되어있다면 삭제 고려
         // Review id가 없는 리뷰 이미지들을 모든 저장소로부터 제거합니다.
         List<String> uploadedUrls = reviewImageRepository.findAllWithoutReviewId();
         uploadedUrls.forEach((uploadedUrl) -> storageService.delete(uploadedUrl, REVIEW_IMAGE));

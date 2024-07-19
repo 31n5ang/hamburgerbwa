@@ -19,11 +19,11 @@ public class ReviewService {
     private final ReviewImageService reviewImageService;
 
     @Transactional
-    public Long writeProcess(ReviewCreateForm form, Long memberId, List<String> allImageUrls) {
+    public Long writeProcess(ReviewCreateForm form, Long memberId) {
         // 리뷰 저장과 동시에, 리뷰에 저장되지 못한 이미지들을 모두 제거하는 최적화를 진행합니다.
         Long reviewId = saveReview(form, memberId);
-        reviewImageService.attachReview(reviewId, allImageUrls);
-        reviewImageService.deleteUnusedReviewImages(form.getContent(), allImageUrls);
+        reviewImageService.attachReview(reviewId, form.getAllImageUrls());
+        reviewImageService.deleteUnusedReviewImages(form.getContent(), form.getAllImageUrls());
         return reviewId;
     }
 

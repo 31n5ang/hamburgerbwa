@@ -10,8 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -37,7 +35,6 @@ public class ReviewController {
 
     @PostMapping("/create")
     public String create(
-            @RequestParam("allImageUrls") List<String> allImageUrls,
             @Valid @ModelAttribute("form") ReviewCreateForm form,
             BindingResult bindingResult
     ) {
@@ -45,7 +42,7 @@ public class ReviewController {
             return REVIEW_CREATE_FORM;
         }
 
-        Long reviewId = reviewService.writeProcess(form, null, allImageUrls);
+        Long reviewId = reviewService.writeProcess(form, null);
 
         return "redirect:/review/" + reviewId;
     }
@@ -59,7 +56,5 @@ public class ReviewController {
         model.addAttribute("review", reviewDto);
         return REVIEW;
     }
-
-
 }
 

@@ -51,8 +51,10 @@
         </form>
     </div>
     <script th:inline="javascript">
+        // 만약 Bean Validation에 통과하지 못해서 form으로 돌아왔다면, 이미지와 content를 복구합니다.
         const initialContent = /*[[${form.content} != null ? ${form.content} : '']]*/;
-        const allImageUrls = [];
+        const cacheAllImageUrls = /*[[${form.allImageUrls}]]*/;
+        const allImageUrls = cacheAllImageUrls ? cacheAllImageUrls : [];
 
         const editor = new toastui.Editor({
             el: document.querySelector('#content'),
