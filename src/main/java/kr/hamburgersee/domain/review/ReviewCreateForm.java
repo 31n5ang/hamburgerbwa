@@ -28,5 +28,5 @@ public class ReviewCreateForm {
 
     private Long memberId;
 
-    private List<String> allImageUrls;
+    private List<String> allImageUrls = new ArrayList<>();
 }

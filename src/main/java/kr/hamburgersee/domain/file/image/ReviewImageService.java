@@ -31,7 +31,10 @@ public class ReviewImageService {
             // 만약 부착할 리뷰가 없다면 이미지를 모두 삭제합니다.
             deleteUnusedReviewImages("", uploadedUrls);
         } else {
+            // 리뷰를 부착(참조)합니다.
             Review review = optionalReview.get();
+
+            // 이미지의 개수가 많을 수 있으므로 벌크 연산을 사용합니다.
             reviewImageRepository.updateReviewByUrls(review, uploadedUrls);
         }
     }
