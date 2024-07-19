@@ -1,4 +1,4 @@
-package kr.hamburgersee.domain.aws;
+package kr.hamburgersee.domain.aws.storage;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

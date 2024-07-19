@@ -45,10 +45,7 @@ public class ReviewController {
             return REVIEW_CREATE_FORM;
         }
 
-        Long reviewId = reviewService.write(form, null);
-
-        reviewImageService.attachReview(reviewId, allImageUrls);
-        reviewImageService.deleteUselessReviewImage(form.getContent(), allImageUrls);
+        Long reviewId = reviewService.writeProcess(form, null, allImageUrls);
 
         return "redirect:/review/" + reviewId;
     }
@@ -62,5 +59,7 @@ public class ReviewController {
         model.addAttribute("review", reviewDto);
         return REVIEW;
     }
+
+
 }
 
