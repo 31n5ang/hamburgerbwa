@@ -30,29 +30,30 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewDto getReviewDto(Long reviewId) {
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+
         if (optionalReview.isEmpty()) {
             throw new ReviewNotFoundException("해당 id의 리뷰를 찾을 수 없습니다.");
-        } else {
-            Review review = optionalReview.get();
-
-            List<ReviewTagType> reviewTagTypes = review.getTags().stream()
-                    .map((tag) -> tag.getTagType())
-                    .toList();
-
-            ReviewDto reviewDto = new ReviewDto(
-                    review.getTitle(),
-                    review.getRegionValue(),
-                    review.getShopName(),
-                    review.getContent(),
-                    reviewTagTypes,
-                    review.getAt(),
-                    review.getGood(),
-                    "",
-                    null
-            );
-
-            return reviewDto;
         }
+
+        Review review = optionalReview.get();
+
+        List<ReviewTagType> reviewTagTypes = review.getTags().stream()
+                .map((tag) -> tag.getTagType())
+                .toList();
+
+        ReviewDto reviewDto = new ReviewDto(
+                review.getTitle(),
+                review.getRegionValue(),
+                review.getShopName(),
+                review.getContent(),
+                reviewTagTypes,
+                review.getAt(),
+                review.getGood(),
+                "",
+                null
+        );
+
+        return reviewDto;
     }
 
     private Long saveReview(ReviewCreateForm form, Long memberId) {
