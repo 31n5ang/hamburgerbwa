@@ -5,6 +5,7 @@
     <title>함버거봐 - 리뷰</title>
 </head>
 <article style="max-width: 700px;">
-    <div th:replace="layout/fragments/review/review :: review">리뷰</div>
+    <div th:replace="~{layout/fragments/review/review :: review}">리뷰 보기</div>
+    <div th:replace="~{layout/fragments/comment/comment :: form}">댓글 작성</div>
 </article>
 </html>
