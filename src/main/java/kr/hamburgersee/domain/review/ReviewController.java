@@ -21,6 +21,11 @@ public class ReviewController {
     private static final String REVIEW_CREATE_FORM = "review-create";
     private static final String REVIEW = "review";
 
+    /**
+     * 사용자가 리뷰 작성 중, 리뷰 이미지를 삽입할 때 요청됩니다.
+     * @param file 삽입한 이미지입니다.
+     * @return 이미지 스토리지에 저장 후, 실제 저장된 파일의 물리적 경로를 반환합니다.
+     */
     @ResponseBody
     @PostMapping("/image")
     public String uploadImage(@RequestParam("file") MultipartFile file) {
