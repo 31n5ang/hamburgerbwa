@@ -24,6 +24,8 @@ public class MemberJoinForm {
 
     private String bio;
 
+    private String profileImageBase64;
+
     // 생성자
     private MemberJoinForm(RegionType region, GenderType gender) {
         this.region = region;

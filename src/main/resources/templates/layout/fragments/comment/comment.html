@@ -26,8 +26,9 @@
 <div th:fragment="comments">
     <div class="container">
         <div class="shadow-sm my-4 border rounded p-3">
-            <div th:each="comment : ${comments}">
-                <hr />
+            <span class="text-center" th:if="${comments.size() == 0}" th:text="#{label.comment.empty}"></span>
+            <div th:each="comment, stat : ${comments}">
+                <th:block th:if="${stat.index != 0}"><hr /></th:block>
                 <div class="row">
                     <div class="col-md-3 p-3 text-center">
                         <!-- 닉네임 및 프로필 -->

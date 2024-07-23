@@ -1,14 +1,21 @@
 package kr.hamburgersee.domain.member;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static kr.hamburgersee.domain.member.MemberConst.*;
 
@@ -18,6 +25,34 @@ import static kr.hamburgersee.domain.member.MemberConst.*;
 public class MemberController {
     private final MemberService memberService;
     private static final String JOIN_FORM_PATH = "join";
+
+    @ResponseBody
+    @GetMapping("/login")
+    public String test(HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("hello", "world");
+        session.setAttribute("hellooo", "worldddd");
+        return "";
+    }
+
+    @ResponseBody
+    @GetMapping("/session")
+    public ResponseEntity<Map<String, Object>> session(HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        HttpSession session = request.getSession(false);
+        result.put("hello", session.getAttribute("hello"));
+        result.put("helloo", session.getAttribute("hellooo"));
+        return ResponseEntity.ok(result);
+    }
+
+    @ResponseBody
+    @GetMapping("/logout")
+    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        return ResponseEntity.ok(result);
+    }
 
     @GetMapping("/join")
     public String getJoin(Model model) {

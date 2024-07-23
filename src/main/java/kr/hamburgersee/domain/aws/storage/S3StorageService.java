@@ -20,6 +20,7 @@ public class S3StorageService implements StorageService {
     @Override
     public String upload(byte[] file, String uploadFilename, StorageUploadFileType fileType) {
         String pureExt = FileUtils.parsePureExt(uploadFilename);
+        // content-type이 이미지가 아닐 땐..?
         ObjectMetadata metadata = createDefaultObjectMetadata(file, "image/" + pureExt);
         String uploadUrl = fileType.path + uploadFilename;
         s3Client.putObject(bucket, uploadUrl, new ByteArrayInputStream(file), metadata);
