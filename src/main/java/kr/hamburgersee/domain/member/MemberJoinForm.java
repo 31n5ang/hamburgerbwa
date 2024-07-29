@@ -2,9 +2,9 @@ package kr.hamburgersee.domain.member;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import kr.hamburgersee.domain.common.RegionType;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class MemberJoinForm {
@@ -24,7 +24,7 @@ public class MemberJoinForm {
 
     private String bio;
 
-    private String profileImageBase64;
+    private MultipartFile profileImageBase64;
 
     // 생성자
     private MemberJoinForm(RegionType region, GenderType gender) {
@@ -33,7 +33,6 @@ public class MemberJoinForm {
     }
 
     // 팩토리 메소드
-    // 성별과 지역의 기본값을 설정한 빈 객체를 생성하는 메소드이다.
     public static MemberJoinForm createDefaultEmpty() {
         return new MemberJoinForm(RegionType.ETC, GenderType.NONE);
     }
