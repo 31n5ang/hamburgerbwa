@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="form">
+<div th:fragment="join-form">
     <div class="container">
-        <form th:acion method="post" th:object="${form}">
+        <form th:acion method="post" th:object="${form}" enctype="multipart/form-data">
             <div class="form-group">
                 <label th:for="*{email}" th:text="|*#{form.label.member.email}|">이메일</label>
                 <input type="text" th:field="*{email}" th:name="*{email}" class="form-control" />
@@ -58,6 +58,23 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-block" th:text="#{form.btn.join}">가입하기</button>
+        </form>
+    </div>
+</div>
+<div th:fragment="login-form">
+    <div class="container">
+        <form method="post" th:object="${form}" th:action>
+            <div class="form-group">
+                <label th:for="*{email}" th:text="#{form.label.member.email}" class="col-form-label">이메일</label>
+                <input type="text" th:field="*{email}" class="form-control">
+                <div th:errors="*{email}" class="form-error">이메일 에러</div>
+            </div>
+            <div>
+                <label th:for="*{rawPassword}" th:text="#{form.label.member.password}" class="col-form-label">비밀번호</label>
+                <input type="password" th:field="*{rawPassword}" class="form-control">
+                <div th:errors="*{rawPassword}" th:class="form-error">비밀번호 에러</div>
+            </div>
+            <button type="submit" th:text="#{form.btn.login}" class="btn btn-block btn-primary">로그인</button>
         </form>
     </div>
 </div>
