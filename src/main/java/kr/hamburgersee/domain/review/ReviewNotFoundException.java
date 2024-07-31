@@ -1,6 +1,6 @@
 package kr.hamburgersee.domain.review;
 
-public class ReviewNotFoundException extends RuntimeException{
+public class ReviewNotFoundException extends ReviewException {
     public ReviewNotFoundException() {
     }
 

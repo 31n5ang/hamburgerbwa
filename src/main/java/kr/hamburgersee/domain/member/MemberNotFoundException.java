@@ -1,6 +1,6 @@
 package kr.hamburgersee.domain.member;
 
-public class MemberNotFoundException extends RuntimeException {
+public class MemberNotFoundException extends MemberException {
     public MemberNotFoundException() {
     }
 
@@ -14,9 +14,5 @@ public class MemberNotFoundException extends RuntimeException {
 
     public MemberNotFoundException(Throwable cause) {
         super(cause);
-    }
-
-    public MemberNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }
