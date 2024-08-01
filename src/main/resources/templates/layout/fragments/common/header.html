@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="nav_bar">
+    <div class="container row p-3 mx-auto align-items-center">
+        <!-- 로고 -->
+        <div class="col-2">
+            <a th:href="@{/}">함버거봐~</a>
+        </div>
+
+        <!-- 리뷰 검색 -->
+        <div class="col-7">
+            <form th:action="@{/review/search}" method="get" class="w-100">
+                <div class="input-group">
+                    <input type="text" th:name="keyword" th:placeholder="#{form.placeholder.search}"
+                           class="form-control mr-1">
+                    <button type="submit" th:text="#{form.btn.search}" class="btn btn-info">검색</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 회원 관리 -->
+        <div class="col-3 d-flex justify-content-center">
+            <div th:if="${memberSessionInfo}">
+                <!-- 로그인 상태일 경우 -->
+                <span th:text="${memberSessionInfo.nickname}">nickname</span>
+                &nbsp;|&nbsp;
+                <a th:href="@{/member/my}" th:text="#{label.my}">MY</a>
+            </div>
+
+            <div th:unless="${memberSessionInfo}">
+                <!-- 로그인 상태가 아닐 경우 -->
+                <a th:text="#{label.login}" th:href="@{/login}">로그인</a>
+                &nbsp;|&nbsp;
+                <a th:text="#{label.join}" th:href="@{/join}">회원가입</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container row mx-auto">
+        <!-- 메뉴 -->
+        <div class="col-12 text-center">
+            <a th:href="@{/}" class="small">따끈따끈 새 리뷰</a> &nbsp;|&nbsp;
+            <a th:href="@{/}" class="small">이달의 리뷰</a> &nbsp;|&nbsp;
+            <a th:href="@{/}" class="small">명예의 전당</a>
+        </div>
+    </div>
+    <hr />
+</div>
+</html>
