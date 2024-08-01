@@ -1,5 +1,6 @@
 package kr.hamburgersee.domain.member;
 
+import kr.hamburgersee.domain.session.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberValidator memberValidator;
 
+    @Transactional(readOnly = true)
+    public MemberAuthenticatedInfo authenticate(MemberLoginForm form) {
+        return memberValidator.login(form.getEmail(), form.getRawPassword());
+    }
+
     @Transactional
     public void join(MemberJoinForm form) {
         Member createdMember = Member.create(
@@ -25,7 +31,6 @@ public class MemberService {
                 form.getRegion(),
                 form.getGender(),
                 form.getBio());
-
         join(createdMember);
     }
 

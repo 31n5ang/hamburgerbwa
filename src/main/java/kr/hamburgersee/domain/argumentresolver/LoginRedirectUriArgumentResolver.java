@@ -3,12 +3,13 @@ package kr.hamburgersee.domain.argumentresolver;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.hamburgersee.domain.annotation.LoginRedirectUri;
-import kr.hamburgersee.domain.session.SessionConstants;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import static kr.hamburgersee.domain.session.SessionAttrType.REQUEST_REDIRECT_URI;
 
 public class LoginRedirectUriArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
@@ -24,9 +25,9 @@ public class LoginRedirectUriArgumentResolver implements HandlerMethodArgumentRe
         HttpSession session = request.getSession(false);
 
         if (session != null) {
-            return session.getAttribute(SessionConstants.REQUEST_REDIRECT_URI);
+            return session.getAttribute(REQUEST_REDIRECT_URI.attribute);
         }
 
-        return null;
+        return "/";
     }
 }

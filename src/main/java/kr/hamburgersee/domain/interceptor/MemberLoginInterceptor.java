@@ -4,15 +4,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.hamburgersee.domain.annotation.MemberOnly;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.IOException;
 
-import static kr.hamburgersee.domain.session.SessionConstants.*;
+import static kr.hamburgersee.domain.session.SessionAttrType.*;
 
+@RequiredArgsConstructor
 public class MemberLoginInterceptor implements HandlerInterceptor {
-
     public static final String LOGIN_PATH = "/login";
 
     @Override
@@ -23,11 +24,11 @@ public class MemberLoginInterceptor implements HandlerInterceptor {
             MemberOnly methodAnnotation = handlerMethod.getMethodAnnotation(MemberOnly.class);
             if (methodAnnotation != null) {
                 // MemberOnly 어노테이션이 존재한다면 회원 검증을 해야합니다.
-                HttpSession session = request.getSession(false);
+                HttpSession session = request.getSession(true);
                 String requestURI = request.getRequestURI();
-                if (session == null || session.getAttribute(MEMBER_SESSION_INFO) == null) {
+                if (session == null || session.getAttribute(MEMBER_SESSION_INFO.attribute) == null) {
                     // 리다이렉트를 위한 요청 URI를 세션에 저장합니다.
-                    session.setAttribute(REQUEST_REDIRECT_URI, requestURI);
+                    session.setAttribute(REQUEST_REDIRECT_URI.attribute, requestURI);
                     redirect(LOGIN_PATH, response);
                     return false;
                 }

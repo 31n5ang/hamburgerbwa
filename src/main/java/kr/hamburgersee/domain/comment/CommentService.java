@@ -25,17 +25,17 @@ public class CommentService {
     @Transactional
     public Long write(Long reviewId, Long memberId, CommentCreateForm form) {
         Optional<Review> review = reviewRepository.findById(reviewId);
-//        Optional<Member> member = reviewRepository.findById(memberId);
+        Optional<Member> member = memberRepository.findById(memberId);
 
         if (review.isEmpty()) {
             throw new ReviewNotFoundException("해당 리뷰가 존재하지 않습니다.");
         }
 
-//        if (member.isEmpty()) {
-//            throw new MemberNotFoundException("해당 회원이 존재하지 않습니다.");
-//        }
+        if (member.isEmpty()) {
+            throw new MemberNotFoundException("해당 회원이 존재하지 않습니다.");
+        }
 
-        Comment comment = Comment.create(form.getContent(), review.get(), null);
+        Comment comment = Comment.create(form.getContent(), review.get(), member.get());
 
         Comment savedComment = commentRepository.save(comment);
 
@@ -45,14 +45,13 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<CommentDto> getCommentDtos(Long reviewId) {
-        List<Comment> comments = commentRepository.findAllByReviewId(reviewId);
+        List<Comment> comments = commentRepository.findAllByReviewIdWithMemberAndReview(reviewId);
         return comments.stream()
                 .map((comment) -> new CommentDto(
                             comment.getContent(),
                             0,
                             comment.getAt(),
-                            // TODO : member's property
-                            null,
+                            comment.getMember().getNickname(),
                             null
                     ))
                 .collect(Collectors.toList());

@@ -1,6 +1,9 @@
 package kr.hamburgersee.domain.review;
 
 import kr.hamburgersee.domain.file.image.ReviewImageService;
+import kr.hamburgersee.domain.member.Member;
+import kr.hamburgersee.domain.member.MemberNotFoundException;
+import kr.hamburgersee.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Transaction;
@@ -17,6 +20,7 @@ import java.util.Optional;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewImageService reviewImageService;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public Long writeProcess(ReviewCreateForm form, Long memberId) {
@@ -29,7 +33,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewDto getReviewDto(Long reviewId) {
-        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+        Optional<Review> optionalReview = reviewRepository.findByIdWithMember(reviewId);
 
         if (optionalReview.isEmpty()) {
             throw new ReviewNotFoundException("해당 id의 리뷰를 찾을 수 없습니다.");
@@ -49,21 +53,24 @@ public class ReviewService {
                 reviewTagTypes,
                 review.getAt(),
                 review.getGood(),
-                "",
-                null
+                review.getMember().getNickname(),
+                review.getMember().getId()
         );
 
         return reviewDto;
     }
 
     private Long saveReview(ReviewCreateForm form, Long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        if (optionalMember.isEmpty()) {
+            throw new MemberNotFoundException("해당 회원이 존재하지 않습니다.");
+        }
         Review review = Review.create(
                 form.getRegion(),
                 form.getShopName(),
                 form.getTitle(),
                 form.getContent(),
-                //TODO put member
-                null
+                optionalMember.get()
         );
 
         review.attachReviewTags(form.getTagTypes());
