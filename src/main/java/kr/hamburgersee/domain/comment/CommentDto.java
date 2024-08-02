@@ -1,7 +1,7 @@
 package kr.hamburgersee.domain.comment;
 
 import kr.hamburgersee.domain.common.At;
-import kr.hamburgersee.domain.file.image.ProfileImage;
+import kr.hamburgersee.domain.common.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,7 +12,7 @@ public class CommentDto {
 
     private int good;
 
-    private At at;
+    private Date date;
 
     // member
     private String nickname;

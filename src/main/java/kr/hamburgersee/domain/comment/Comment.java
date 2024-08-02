@@ -2,6 +2,7 @@ package kr.hamburgersee.domain.comment;
 
 import jakarta.persistence.*;
 import kr.hamburgersee.domain.common.At;
+import kr.hamburgersee.domain.common.Date;
 import kr.hamburgersee.domain.member.Member;
 import kr.hamburgersee.domain.review.Review;
 import lombok.AccessLevel;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "comments")
-public class Comment {
+public class Comment extends Date {
     @Id @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
@@ -20,9 +21,6 @@ public class Comment {
     @Lob
     @Column(nullable = false)
     private String content;
-
-    @Embedded
-    private At at;
 
     @Enumerated(EnumType.STRING)
     private CommentStatus status;

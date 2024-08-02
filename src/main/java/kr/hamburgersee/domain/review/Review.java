@@ -1,8 +1,8 @@
 package kr.hamburgersee.domain.review;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.common.At;
 import kr.hamburgersee.domain.common.RegionType;
+import kr.hamburgersee.domain.common.Date;
 import kr.hamburgersee.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review {
+public class Review extends Date {
     @Id @GeneratedValue
     @Column(name = "review_id")
     private Long id;
@@ -37,8 +37,7 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewTag> tags = new ArrayList<>();
 
-    @Embedded
-    private At at;
+    private int views;
 
     private int good;
 

@@ -51,7 +51,7 @@ public class ReviewService {
                 review.getShopName(),
                 review.getContent(),
                 reviewTagTypes,
-                review.getAt(),
+                null,
                 review.getGood(),
                 review.getMember().getNickname(),
                 review.getMember().getId()

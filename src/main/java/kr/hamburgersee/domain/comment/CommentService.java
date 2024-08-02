@@ -50,7 +50,7 @@ public class CommentService {
                 .map((comment) -> new CommentDto(
                             comment.getContent(),
                             0,
-                            comment.getAt(),
+                            null,
                             comment.getMember().getNickname(),
                             null
                     ))

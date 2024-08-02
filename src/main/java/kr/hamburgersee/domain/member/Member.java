@@ -3,6 +3,7 @@ package kr.hamburgersee.domain.member;
 import jakarta.persistence.*;
 import kr.hamburgersee.domain.common.At;
 import kr.hamburgersee.domain.common.RegionType;
+import kr.hamburgersee.domain.common.Date;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends Date {
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
@@ -39,9 +40,6 @@ public class Member {
 
     @Lob
     private String bio;
-
-    @Embedded
-    private At at;
 
     // 생성자
     private Member(String email, String encPassword, String nickname, RegionType region, GenderType gender, String bio) {
