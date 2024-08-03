@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="join-form">
+    <div class="container">
+        <form th:acion method="post" th:object="${form}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label th:for="*{email}" th:text="|*#{form.label.member.email}|">이메일</label>
+                <input type="text" th:field="*{email}" th:name="*{email}" class="form-control" />
+                <p th:errors="*{email}" class="form-error">이메일 오류</p>
+            </div>
+
+            <div class="form-group">
+                <label th:for="*{rawPassword}" th:text="|*#{form.label.member.password}|">비밀번호</label>
+                <input type="password" th:field="*{rawPassword}" th:name="*{rawPassword}" class="form-control"/>
+                <p th:errors="*{rawPassword}" class="form-error">비밀번호 오류</p>
+            </div>
+
+            <div class="form-group">
+                <label th:for="*{nickname}" th:text="|*#{form.label.member.nickname}|">별명</label>
+                <input type="text" th:field="*{nickname}" th:name="*{nickname}" class="form-control"/>
+                <p th:errors="*{nickname}" class="form-error">별명 오류</p>
+            </div>
+
+            <div class="form-group">
+                <label th:for="*{region}" th:text="#{form.label.member.region}">지역</label>
+                <select th:name="*{region}" th:field="*{region}" class="form-control">
+                    <option th:each="regionOpt : ${T(kr.hamburgersee.domain.common.RegionType).values()}"
+                            th:value="${regionOpt}"
+                            th:text="${regionOpt.displayName}">
+                        지역 선택
+                    </option>
+                </select>
+                <p th:errors="*{region}" class="form-error">지연 선택 오류</p>
+            </div>
+
+            <div class="form-group">
+                <div th:each="genderOpt : ${T(kr.hamburgersee.domain.member.GenderType).values()}" class="form-check">
+                    <input type="radio" th:field="*{gender}" th:name="*{gender}" th:value="${genderOpt.name()}"
+                           class="form-check-input">
+                    <label th:for="*{gender}" th:text="${genderOpt.displayName}"></label>
+                </div>
+                <p th:errors="*{gender}" class="form-error">성별 오류</p>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <label th:for="*{profileImageBase64}" class="input-group-text"
+                           th:text="#{form.label.member.profileImg}"></label>
+                    <input th:name="*{profileImageBase64}" type="file" class="form-control"
+                           th:field="*{profileImageBase64}" accept="image/*">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="*{bio}" th:text="#{form.label.member.bio}"></label>
+                <input type="text" th:field="*{bio}" class="form-control"/>
+                <p th:errors="*{bio}" class="form-error"></p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" th:text="#{form.btn.join}">가입하기</button>
+        </form>
+    </div>
+</div>
+<div th:fragment="login-form">
+    <div class="container">
+        <form method="post" th:object="${form}" th:action>
+            <div class="form-group">
+                <label th:for="*{email}" th:text="#{form.label.member.email}" class="col-form-label">이메일</label>
+                <input type="text" th:name="*{email}" th:field="*{email}" class="form-control">
+                <div th:errors="*{email}" class="form-error">이메일 에러</div>
+            </div>
+            <div>
+                <label th:for="*{rawPassword}" th:text="#{form.label.member.password}" class="col-form-label">비밀번호</label>
+                <input type="password" th:name="*{rawPassword}" th:field="*{rawPassword}" class="form-control">
+                <div th:errors="*{rawPassword}" th:class="form-error">비밀번호 에러</div>
+            </div>
+            <button type="submit" th:text="#{form.btn.login}" class="btn btn-block btn-primary">로그인</button>
+        </form>
+    </div>
+</div>
+</html>

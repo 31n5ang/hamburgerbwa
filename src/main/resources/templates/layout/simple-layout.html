@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html th:fragment="layout(title, content)" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+</head>
+    <title th:replace="${title}">레이아웃 title</title>
+</head>
+<body>
+<div th:replace="~{layout/fragments/common/header :: nav_bar}">nav_bar</div>
+<div th:replace="${content}">content</div>
+<footer th:replace="~{layout/fragments/common/footer :: details}">details</footer>
+</body>
+</html>

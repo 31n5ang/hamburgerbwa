@@ -1,0 +1,17 @@
+article {
+    margin: auto;
+}
+
+.form-error {
+    color: red;
+    border-color: red;
+}
+
+.review-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.link-normal {
+    text-decoration: none;
+}

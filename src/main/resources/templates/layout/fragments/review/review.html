@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="form">
+    <div class="container">
+        <form th:action method="post" th:object="${form}" id="review-create-form">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label th:for="*{region}" th:text="#{form.label.review.region}" class="col-form-label-lg">지역</label>
+                    <select th:name="*{region}" th:field="*{region}" class="form-control">
+                        <option th:each="regionOpt : ${T(kr.hamburgersee.domain.common.RegionType).values()}"
+                                th:value="${regionOpt}"
+                                th:text="${regionOpt.displayName}">
+                            지역 선택
+                        </option>
+                    </select>
+                    <p th:errors="*{region}" th:class="form-error">지연 선택 오류</p>
+                </div>
+
+                <div class="form-group col-md-9">
+                    <label th:for="*{shopName}" th:text="|*#{form.label.review.shopName}|" class="col-form-label-lg">가게 이름</label>
+                    <input type="text" th:field="*{shopName}" th:name="*{shopName}" class="form-control" />
+                    <p th:errors="*{shopName}" th:class="form-error">가게 이름 오류</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="*{title}" th:text="|*#{form.label.review.title}|" class="col-form-label-lg">리뷰 제목</label>
+                <input type="text" th:field="*{title}" th:name="*{title}" class="form-control" />
+                <p th:errors="*{title}" th:class="form-error">제목</p>
+            </div>
+            <div class="form-group">
+                <!--toast-ui editor-->
+                <p class="col-form-label-lg" th:text="|*#{form.label.review.content}|"></p>
+                <p th:errors="*{content}" th:class="form-error">본문</p>
+                <div id="content"></div>
+                <input type="hidden" name="content" value="" id="content-field">
+                <input type="hidden" name="allImageUrls" value="" id="all-image-urls">
+            </div>
+
+            <div class="form-group">
+                <p th:text="#{form.label.review.tag.description}" class="col-form-label-lg">무엇과 관련이 있을까요?</p>
+                <div th:each="tag : ${T(kr.hamburgersee.domain.review.ReviewTagType).values()}"
+                     class="form-check form-check-inline">
+                    <input type="checkbox" th:field="*{tagTypes}" th:value="${tag}" class="form-check-input">
+                    <label th:for="${#ids.prev('tagTypes')}" th:text="${tag.displayName}">태그</label>
+                </div>
+            </div>
+
+            <button type="button" onclick="submitForm()" class="btn-lg btn-primary btn-block"
+                    th:text="#{form.btn.create}">작성하기</button>
+        </form>
+    </div>
+    <script th:inline="javascript">
+        // 만약 Bean Validation에 통과하지 못해서 form으로 돌아왔다면, 이미지와 content를 복구합니다.
+        const initialContent = /*[[${form.content} != null ? ${form.content} : '']]*/;
+        const cacheAllImageUrls = /*[[${form.allImageUrls}]]*/;
+        const allImageUrls = cacheAllImageUrls ? cacheAllImageUrls : [];
+
+        const editor = new toastui.Editor({
+            el: document.querySelector('#content'),
+            height: '500px',
+            initialEditType: 'wysiwyg',
+            previewStyle: 'vertical',
+            initialValue: initialContent,
+            hooks: {
+                addImageBlobHook: async (blob, callback) => {
+                    // 클라이언트 로컬 저장소에 이미지 임시 저장
+                    const formData = new FormData();
+                    formData.append('file', blob);
+                    try {
+                        const response = await fetch('/review/image', {
+                            method: 'post',
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            const imageUrl = await response.text();
+                            allImageUrls.push(imageUrl);
+                            callback(imageUrl, 'image');
+                        } else {
+                            alert("이미지 업로드에 실패했습니다.");
+                        }
+                    } catch (error) {
+                        alert("이미지 업로드에 실패했습니다.");
+                    }
+                }
+            }
+        });
+
+        const submitForm = async () => {
+            document.getElementById('content-field').value = editor.getHTML();
+            document.getElementById('all-image-urls').value = allImageUrls;
+
+            document.getElementById('review-create-form').submit();
+        }
+    </script>
+</div>
+<div th:fragment="review">
+    <div class="container">
+        <div class="text-right">
+            <span th:text="${review.nickname}" class="p-2 badge bg-primary text-white">닉네임</span>
+        </div>
+        <div class="h3">
+            <span th:text="${review.region.displayName}" class="badge bg-secondary text-white"></span>
+            <span th:text="${review.title}">제목</span>
+        </div>
+        <div class="shadow-sm my-4 border rounded p-3 review-content">
+            <div th:utext="${review.content}">본문</div>
+            <hr />
+            <div class="text-center">
+                <span th:text="#{label.review.good}">좋아요</span><br />
+                <span th:text="${review.good}" class="h3">0</span>
+            </div>
+        </div>
+        <div class="shadow-sm my-4 border rounded p-3 text-center">
+            <div th:if="${#lists.isEmpty(review.tags)}" th:text="#{label.review.tag.empty}">버거 태그가 존재하지 않습니다.</div>
+            <span th:each="tag : ${review.tags}" class="h4 badge bg-info p-1 m-1 text-white"
+                  th:text="${tag.displayName}">
+            </span>
+        </div>
+    </div>
+</div>
+<div th:fragment="reviews-recent">
+    <div class="container">
+
+    </div>
+</div>
+</html>
+

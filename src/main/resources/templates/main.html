@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/simple-layout :: layout(~{::title}, ~{::article})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>함버거봐</title>
+</head>
+<article>
+    <div th:replace="~{layout/fragments/review/review :: reviews-recent}"></div>
+</article>
+</html>
