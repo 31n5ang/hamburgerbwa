@@ -1,11 +1,12 @@
 package kr.hamburgersee.domain.file.image;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.common.At;
 import kr.hamburgersee.domain.common.Date;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Image extends Date {

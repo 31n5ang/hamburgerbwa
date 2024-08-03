@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> {
@@ -25,4 +26,6 @@ public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update ReviewImage ri set ri.review = :review where ri.url in :urls")
     void updateReviewByUrls(@Param("review") Review review, @Param("urls") List<String> urls);
+
+    Optional<ReviewImage> findFirstByReview(@Param("review") Review review);
 }

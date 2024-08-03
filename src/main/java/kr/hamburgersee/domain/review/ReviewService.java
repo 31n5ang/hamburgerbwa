@@ -1,6 +1,8 @@
 package kr.hamburgersee.domain.review;
 
 import kr.hamburgersee.domain.file.image.ReviewImageService;
+import kr.hamburgersee.domain.file.image.ThumbnailImageException;
+import kr.hamburgersee.domain.file.image.ThumbnailImageService;
 import kr.hamburgersee.domain.member.Member;
 import kr.hamburgersee.domain.member.MemberNotFoundException;
 import kr.hamburgersee.domain.member.MemberRepository;
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewImageService reviewImageService;
+    private final ThumbnailImageService thumbnailImageService;
     private final MemberRepository memberRepository;
 
     @Transactional
@@ -28,6 +31,14 @@ public class ReviewService {
         Long reviewId = saveReview(form, memberId);
         reviewImageService.attachReview(reviewId, form.getAllImageUrls());
         reviewImageService.deleteUnusedReviewImages(form.getContent(), form.getAllImageUrls());
+
+        // 썸네일을 저장합니다.
+        try {
+            thumbnailImageService.uploadThumbnailImage(reviewId);
+        } catch (ThumbnailImageException e) {
+            // 썸네일 저장 실패 시 로직
+        }
+
         return reviewId;
     }
 
@@ -76,8 +87,6 @@ public class ReviewService {
         review.attachReviewTags(form.getTagTypes());
 
         Review savedReview = reviewRepository.save(review);
-
-        log.info("savedReview class = {}", savedReview.getClass());
 
         return savedReview.getId();
     }

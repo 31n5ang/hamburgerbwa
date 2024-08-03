@@ -34,6 +34,9 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'com.mysql:mysql-connector-j'
 
+    // 썸네일 라이브러리
+    implementation 'net.coobird:thumbnailator:0.4.20'
+
     // 마크다운 라이브러리
     implementation 'org.commonmark:commonmark:0.22.0'
 

@@ -1,7 +1,6 @@
 package kr.hamburgersee.domain.member;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.common.At;
 import kr.hamburgersee.domain.common.RegionType;
 import kr.hamburgersee.domain.common.Date;
 import lombok.AccessLevel;

@@ -1,6 +1,5 @@
 package kr.hamburgersee.domain.comment;
 
-import kr.hamburgersee.domain.common.At;
 import kr.hamburgersee.domain.common.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;

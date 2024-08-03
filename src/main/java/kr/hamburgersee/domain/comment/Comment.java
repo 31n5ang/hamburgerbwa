@@ -1,7 +1,6 @@
 package kr.hamburgersee.domain.comment;
 
 import jakarta.persistence.*;
-import kr.hamburgersee.domain.common.At;
 import kr.hamburgersee.domain.common.Date;
 import kr.hamburgersee.domain.member.Member;
 import kr.hamburgersee.domain.review.Review;
