@@ -2,7 +2,7 @@
 <html th:replace="~{layout/simple-layout :: layout(~{::title}, ~{::article})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>함버거봐 - 리뷰</title>
+    <title th:text="#{page.title.review}">함버거봐 - 리뷰</title>
 </head>
 <article style="max-width: 700px;">
     <div th:replace="~{layout/fragments/review/review :: review}">리뷰 보기</div>

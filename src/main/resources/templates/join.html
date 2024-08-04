@@ -2,7 +2,7 @@
 <html th:replace="~{layout/simple-layout :: layout(~{::title}, ~{::article})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>회원가입</title>
+    <title th:text="#{page.title.join}">회원가입</title>
 </head>
 <article style="max-width: 700px">
     <div th:replace="~{layout/fragments/member/member :: join-form}">회원가입 폼</div>

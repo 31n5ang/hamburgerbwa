@@ -2,7 +2,7 @@
 <html th:replace="~{layout/simple-layout :: layout(~{::title}, ~{::article})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>로그인</title>
+    <title th:text="#{page.title.login}">로그인</title>
 </head>
 <article style="max-width: 700px">
     <div th:replace="~{layout/fragments/member/member :: login-form}">로그인 폼</div>
