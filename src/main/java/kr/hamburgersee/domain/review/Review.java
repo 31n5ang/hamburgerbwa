@@ -3,6 +3,7 @@ package kr.hamburgersee.domain.review;
 import jakarta.persistence.*;
 import kr.hamburgersee.domain.common.RegionType;
 import kr.hamburgersee.domain.common.Date;
+import kr.hamburgersee.domain.file.image.ThumbnailImage;
 import kr.hamburgersee.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -44,6 +45,10 @@ public class Review extends Date {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "thumbnail_image_id")
+    private ThumbnailImage thumbnailImage;
 
     // 생성자
     private Review(RegionType regionValue, String shopName, String title, String content,

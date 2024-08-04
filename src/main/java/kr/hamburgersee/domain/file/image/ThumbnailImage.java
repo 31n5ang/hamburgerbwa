@@ -14,8 +14,7 @@ public class ThumbnailImage extends Image {
     @Column(name = "thumbnail_image_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "thumbnailImage")
     private Review review;
 
     // 생성 메소드
