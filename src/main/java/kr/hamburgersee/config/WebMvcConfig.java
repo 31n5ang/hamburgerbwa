@@ -14,6 +14,7 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 회원이 로그인되어있는 상태인지 검증합니다.
         registry.addInterceptor(new MemberLoginInterceptor())
                 .order(0)
                 .addPathPatterns("/**");
