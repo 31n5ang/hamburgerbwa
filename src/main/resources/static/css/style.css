@@ -16,17 +16,25 @@ article {
     text-decoration: none;
 }
 
-.review-card {
-
+.review-card-container {
+    max-width: 300px;
 }
 
 .thumbnail-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition-duration:0.3s;
+}
+
+.thumbnail-image:hover {
+    transform: scale(1.1);
+    transform-origin: center;
+    filter: brightness(0.9);
 }
 
 .thumbnail-image-container {
-    max-height: 300px;
+    cursor: pointer;
+    max-height: 200px;
     overflow: hidden;
 }
