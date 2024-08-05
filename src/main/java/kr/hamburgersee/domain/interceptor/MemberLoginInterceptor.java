@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.hamburgersee.domain.annotation.MemberOnly;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,7 +11,6 @@ import java.io.IOException;
 
 import static kr.hamburgersee.domain.session.SessionAttrType.*;
 
-@RequiredArgsConstructor
 public class MemberLoginInterceptor implements HandlerInterceptor {
     public static final String LOGIN_PATH = "/login";
 
