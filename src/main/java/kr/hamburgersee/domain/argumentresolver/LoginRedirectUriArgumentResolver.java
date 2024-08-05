@@ -20,7 +20,8 @@ public class LoginRedirectUriArgumentResolver implements HandlerMethodArgumentRe
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         HttpSession session = request.getSession(false);
 
@@ -30,4 +31,6 @@ public class LoginRedirectUriArgumentResolver implements HandlerMethodArgumentRe
 
         return "/";
     }
+
+
 }
