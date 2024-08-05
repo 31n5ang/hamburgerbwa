@@ -85,4 +85,9 @@ public class Review extends Date {
         }
         this.tags = tags;
     }
+
+    public void attachThumbnailImage(ThumbnailImage thumbnailImage) {
+        this.thumbnailImage = thumbnailImage;
+        thumbnailImage.attachReview(this);
+    }
 }

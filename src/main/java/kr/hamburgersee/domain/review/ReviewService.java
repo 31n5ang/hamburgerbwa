@@ -6,11 +6,17 @@ import kr.hamburgersee.domain.member.MemberNotFoundException;
 import kr.hamburgersee.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static kr.hamburgersee.domain.review.ContentUtils.omitContent;
+import static kr.hamburgersee.domain.review.ContentUtils.purifyHtmlTagContent;
 
 @Slf4j
 @Service
@@ -20,6 +26,15 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final ThumbnailImageService thumbnailImageService;
     private final ReviewImageService reviewImageService;
+
+    @Value("${review.content.omitted-length}")
+    private int CONTENT_OMITTED_LENGTH;
+
+    @Value("${review.content.ellipsis}")
+    private String CONTENT_ELLIPSIS;
+
+    @Value("${review.content.replace.img-tag}")
+    private String CONTENT_REPLACE_IMG_TAG;
 
     @Transactional
     public Long writeProcess(ReviewCreateForm form, Long memberId) {
@@ -86,5 +101,24 @@ public class ReviewService {
         Review savedReview = reviewRepository.save(review);
 
         return savedReview.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<ReviewCardDto> getReviewCardDtos(Pageable pageable) {
+        Slice<Review> reviews = reviewRepository.findSliceWithRelated(pageable);
+        return reviews.map(review -> new ReviewCardDto(
+                        review.getId(),
+                        review.getShopName(),
+                        review.getTitle(),
+                        omitContent(purifyHtmlTagContent(review.getContent(), CONTENT_REPLACE_IMG_TAG),
+                                CONTENT_ELLIPSIS, CONTENT_OMITTED_LENGTH),
+                        review.getMember().getNickname(),
+                        review.getThumbnailImage() == null ? null : review.getThumbnailImage().getUrl(),
+                        review.getCreatedDate(),
+                        review.getTags().stream()
+                                .map(reviewTag -> reviewTag.getTagType())
+                                .toList(),
+                        review.getRegionValue().displayName
+                ));
     }
 }

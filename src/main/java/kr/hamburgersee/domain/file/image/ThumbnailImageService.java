@@ -68,9 +68,9 @@ public class ThumbnailImageService {
             throw new ThumbnailImageException("썸네일 생성에 실패했습니다.", e);
         }
 
-        ThumbnailImage thumbnailImage = ThumbnailImage.create(uploadedUrl, originalFilename, review);
-
+        ThumbnailImage thumbnailImage = ThumbnailImage.create(uploadedUrl, originalFilename);
         ThumbnailImage savedThumbnailImage = thumbnailImageRepository.save(thumbnailImage);
+        review.attachThumbnailImage(savedThumbnailImage);
 
         return savedThumbnailImage.getId();
     }

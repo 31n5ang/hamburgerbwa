@@ -9,11 +9,13 @@ import kr.hamburgersee.domain.file.image.ReviewImageService;
 import kr.hamburgersee.domain.session.MemberSessionInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.*;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,23 +25,13 @@ import java.util.List;
 @RequestMapping("/review")
 public class ReviewController {
     private final ReviewService reviewService;
-    private final ReviewImageService reviewImageService;
     private final CommentService commentService;
+
+    @Value("${review.sort.by}")
+    private final String SORT_BY = "createdDate";
 
     private static final String REVIEW_CREATE_FORM = "review-create";
     private static final String REVIEW = "review";
-
-    /**
-     * 사용자가 리뷰 작성 중, 리뷰 이미지를 삽입할 때 요청됩니다.
-     * @param file 삽입한 이미지입니다.
-     * @return 이미지 스토리지에 저장 후, 실제 저장된 파일의 물리적 경로를 반환합니다.
-     */
-    @MemberOnly
-    @ResponseBody
-    @PostMapping("/image")
-    public String uploadImage(@RequestParam("file") MultipartFile file) {
-        return reviewImageService.uploadReviewImages(file);
-    }
 
     @MemberOnly
     @GetMapping("/create")
@@ -102,6 +94,29 @@ public class ReviewController {
         commentService.write(reviewId, memberId, form);
 
         return "redirect:/review/" + reviewId;
+    }
+
+    @GetMapping("/list")
+    public String reviews(
+            Model model,
+            @PageableDefault(sort = SORT_BY, direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+
+        Slice<ReviewCardDto> reviewCardDtos = reviewService.getReviewCardDtos(pageable);
+
+        if (reviewCardDtos.hasNext()) {
+            model.addAttribute("nextPageNumber", reviewCardDtos.nextPageable().getPageNumber());
+        }
+
+        if (reviewCardDtos.hasPrevious()) {
+            model.addAttribute("prevPageNumber", reviewCardDtos.previousPageable().getPageNumber());
+        }
+
+        model.addAttribute("hasNext", reviewCardDtos.hasNext());
+        model.addAttribute("hasPrevious", reviewCardDtos.hasPrevious());
+        model.addAttribute("reviews", reviewCardDtos.getContent());
+
+        return "reviews";
     }
 }
 

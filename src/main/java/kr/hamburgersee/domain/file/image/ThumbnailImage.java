@@ -18,18 +18,17 @@ public class ThumbnailImage extends Image {
     private Review review;
 
     // 생성 메소드
-    private ThumbnailImage(String uploadedUrl, String originalFilename, Review review) {
+    private ThumbnailImage(String uploadedUrl, String originalFilename) {
         super(uploadedUrl, originalFilename);
-        this.review = review;
     }
 
     // 팩토리 메소드
-    public static ThumbnailImage create(String uploadedUrl, String originalFilename, Review review) {
-        return new ThumbnailImage(uploadedUrl, originalFilename, review);
+    public static ThumbnailImage create(String uploadedUrl, String originalFilename) {
+        return new ThumbnailImage(uploadedUrl, originalFilename);
     }
 
     public static ThumbnailImage createWithoutReview(String uploadedUrl, String originalFilename) {
-        return new ThumbnailImage(uploadedUrl, originalFilename, null);
+        return new ThumbnailImage(uploadedUrl, originalFilename);
     }
 
     public void attachReview(Review review) {
