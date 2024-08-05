@@ -26,11 +26,11 @@ public class ThumbnailImageService {
     private final ReviewRepository reviewRepository;
     private final ImageManager imageManager;
 
-    @Value("${review.thumbnail.width}")
-    private int THUMBNAIL_WIDTH;
+    @Value("${review.thumbnail.max-width}")
+    private int THUMBNAIL_MAX_WIDTH;
 
-    @Value("${review.thumbnail.height}")
-    private int THUMBNAIL_HEIGHT;
+    @Value("${review.thumbnail.max-height}")
+    private int THUMBNAIL_MAX_HEIGHT;
 
     @Transactional
     public Long uploadThumbnailImage(Long reviewId) {
@@ -58,7 +58,7 @@ public class ThumbnailImageService {
             ByteArrayOutputStream thumbnailImageOutputStream = new ByteArrayOutputStream();
 
             Thumbnails.of(originalUrlInputStream)
-                    .size(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    .size(THUMBNAIL_MAX_WIDTH, THUMBNAIL_MAX_HEIGHT)
                     .toOutputStream(thumbnailImageOutputStream);
 
             byte[] thumbnailBytes = thumbnailImageOutputStream.toByteArray();
