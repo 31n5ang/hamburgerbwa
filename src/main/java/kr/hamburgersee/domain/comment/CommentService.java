@@ -4,7 +4,6 @@ import kr.hamburgersee.domain.member.Member;
 import kr.hamburgersee.domain.member.MemberNotFoundException;
 import kr.hamburgersee.domain.member.MemberRepository;
 import kr.hamburgersee.domain.review.Review;
-import kr.hamburgersee.domain.review.ReviewDto;
 import kr.hamburgersee.domain.review.ReviewNotFoundException;
 import kr.hamburgersee.domain.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +52,6 @@ public class CommentService {
                             comment.getMember().getNickname(),
                             null
                     ))
-                .collect(Collectors.toList());
+                .toList();
     }
 }
