@@ -1,5 +1,6 @@
 package kr.hamburgersee.domain.review;
 
+import kr.hamburgersee.domain.common.DateFormatter;
 import kr.hamburgersee.domain.file.image.*;
 import kr.hamburgersee.domain.member.Member;
 import kr.hamburgersee.domain.member.MemberNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,18 +109,19 @@ public class ReviewService {
     public Slice<ReviewCardDto> getReviewCardDtos(Pageable pageable) {
         Slice<Review> reviews = reviewRepository.findSliceWithRelated(pageable);
         return reviews.map(review -> new ReviewCardDto(
-                        review.getId(),
-                        review.getShopName(),
-                        review.getTitle(),
-                        omitContent(purifyHtmlTagContent(review.getContent(), CONTENT_REPLACE_IMG_TAG),
-                                CONTENT_ELLIPSIS, CONTENT_OMITTED_LENGTH),
-                        review.getMember().getNickname(),
-                        review.getThumbnailImage() == null ? null : review.getThumbnailImage().getUrl(),
-                        review.getCreatedDate(),
-                        review.getTags().stream()
-                                .map(reviewTag -> reviewTag.getTagType())
-                                .toList(),
-                        review.getRegionValue().displayName
-                ));
+                review.getId(),
+                review.getShopName(),
+                review.getTitle(),
+                omitContent(purifyHtmlTagContent(review.getContent(), CONTENT_REPLACE_IMG_TAG),
+                        CONTENT_ELLIPSIS, CONTENT_OMITTED_LENGTH),
+                review.getMember().getNickname(),
+                review.getThumbnailImage() == null ? null : review.getThumbnailImage().getUrl(),
+                review.getCreatedDate(),
+                review.getTags().stream()
+                        .map(reviewTag -> reviewTag.getTagType())
+                        .toList(),
+                review.getRegionValue().displayName,
+                DateFormatter.getAgoFormatted(review.getCreatedDate(), LocalDateTime.now())
+        ));
     }
 }

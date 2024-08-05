@@ -27,8 +27,11 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final CommentService commentService;
 
-    @Value("${review.sort.by}")
+    @Value("${review.paging.sort.by}")
     private final String SORT_BY = "createdDate";
+
+    @Value("${review.paging.size}")
+    private final int PAGE_SIZE = 9;
 
     private static final String REVIEW_CREATE_FORM = "review-create";
     private static final String REVIEW = "review";
@@ -99,19 +102,15 @@ public class ReviewController {
     @GetMapping("/list")
     public String reviews(
             Model model,
-            @PageableDefault(sort = SORT_BY, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = 9, sort = SORT_BY, direction = Sort.Direction.DESC) Pageable pageable
     ) {
-
         Slice<ReviewCardDto> reviewCardDtos = reviewService.getReviewCardDtos(pageable);
-
         if (reviewCardDtos.hasNext()) {
             model.addAttribute("nextPageNumber", reviewCardDtos.nextPageable().getPageNumber());
         }
-
         if (reviewCardDtos.hasPrevious()) {
             model.addAttribute("prevPageNumber", reviewCardDtos.previousPageable().getPageNumber());
         }
-
         model.addAttribute("hasNext", reviewCardDtos.hasNext());
         model.addAttribute("hasPrevious", reviewCardDtos.hasPrevious());
         model.addAttribute("reviews", reviewCardDtos.getContent());
