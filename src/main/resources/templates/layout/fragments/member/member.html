@@ -74,7 +74,8 @@
                 <input type="password" th:name="*{rawPassword}" th:field="*{rawPassword}" class="form-control">
                 <div th:errors="*{rawPassword}" th:class="form-error">비밀번호 에러</div>
             </div>
-            <button type="submit" th:text="#{form.btn.login}" class="btn btn-block btn-primary">로그인</button>
+            <button type="submit" th:text="#{form.btn.login}" class="btn btn-block btn-primary mt-3">로그인</button>
+            <button th:text="#{form.btn.join}" class="btn btn-block btn-outline-primary mt-1">가입하기</button>
         </form>
     </div>
 </div>
