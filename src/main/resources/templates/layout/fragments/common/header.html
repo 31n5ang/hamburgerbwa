@@ -25,6 +25,8 @@
                 <span th:text="${memberSessionInfo.nickname}">nickname</span>
                 &nbsp;|&nbsp;
                 <a th:href="@{/member/my}" th:text="#{label.my}">MY</a>
+                &nbsp;|&nbsp;
+                <a th:href="@{/logout}" th:text="#{label.logout}">로그아웃</a>
             </div>
 
             <div th:unless="${memberSessionInfo}">

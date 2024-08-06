@@ -2,14 +2,13 @@ package kr.hamburgersee.domain.member;
 
 import jakarta.validation.Valid;
 import kr.hamburgersee.domain.annotation.LoginRedirectUri;
+import kr.hamburgersee.domain.annotation.MemberOnly;
 import kr.hamburgersee.domain.session.MemberSessionInfo;
-import kr.hamburgersee.domain.session.SessionAttrType;
 import kr.hamburgersee.domain.session.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -95,5 +94,12 @@ public class MemberController {
         sessionService.remove(REQUEST_REDIRECT_URI);
 
         return "redirect:" + redirectUri;
+    }
+
+    @MemberOnly
+    @GetMapping("/logout")
+    public String getLogout() {
+        sessionService.clear();
+        return "redirect:/";
     }
 }
