@@ -5,7 +5,6 @@ import kr.hamburgersee.domain.annotation.MemberOnly;
 import kr.hamburgersee.domain.comment.CommentCreateForm;
 import kr.hamburgersee.domain.comment.CommentDto;
 import kr.hamburgersee.domain.comment.CommentService;
-import kr.hamburgersee.domain.file.image.ReviewImageService;
 import kr.hamburgersee.domain.session.MemberSessionInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
