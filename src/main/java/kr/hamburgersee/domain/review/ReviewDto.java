@@ -1,10 +1,10 @@
 package kr.hamburgersee.domain.review;
 
 import kr.hamburgersee.domain.common.RegionType;
-import kr.hamburgersee.domain.common.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +21,15 @@ public class ReviewDto {
 
     private List<ReviewTagType> tags = new ArrayList<>();
 
-    private Date date;
+    private LocalDateTime createdDate;
+
+    private LocalDateTime lastModifiedDate;
 
     private int good;
 
     private String nickname;
 
     private Long memberId;
+
+    private String profileUrl;
 }

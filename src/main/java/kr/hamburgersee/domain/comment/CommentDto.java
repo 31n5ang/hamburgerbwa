@@ -1,8 +1,9 @@
 package kr.hamburgersee.domain.comment;
 
-import kr.hamburgersee.domain.common.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -11,10 +12,12 @@ public class CommentDto {
 
     private int good;
 
-    private Date date;
+    private LocalDateTime createdDate;
+
+    private String ago;
 
     // member
     private String nickname;
 
-    private String profileImageUploadedUrl;
+    private String profileUrl;
 }
