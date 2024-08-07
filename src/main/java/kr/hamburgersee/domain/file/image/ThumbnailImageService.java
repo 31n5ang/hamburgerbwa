@@ -63,7 +63,7 @@ public class ThumbnailImageService {
 
             byte[] thumbnailBytes = thumbnailImageOutputStream.toByteArray();
 
-            uploadedUrl = imageManager.uploadImage(thumbnailBytes, originalFilename, THUMBNAIL_REVIEW_IMAGE);
+            uploadedUrl = imageManager.uploadImage(thumbnailBytes, originalFilename, REVIEW_THUMBNAIL_IMAGE);
         } catch (IOException e) {
             throw new ThumbnailImageException("썸네일 생성에 실패했습니다.", e);
         }
