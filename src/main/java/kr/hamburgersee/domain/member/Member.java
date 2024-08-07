@@ -3,6 +3,7 @@ package kr.hamburgersee.domain.member;
 import jakarta.persistence.*;
 import kr.hamburgersee.domain.common.RegionType;
 import kr.hamburgersee.domain.common.Date;
+import kr.hamburgersee.domain.file.image.ProfileImage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,8 +38,12 @@ public class Member extends Date {
     @Enumerated(EnumType.STRING)
     private RolesType roles;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String bio;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_image_id")
+    private ProfileImage profileImage;
 
     // 생성자
     private Member(String email, String encPassword, String nickname, RegionType region, GenderType gender, String bio) {
@@ -57,5 +62,10 @@ public class Member extends Date {
                                GenderType gender,
                            String bio) {
         return new Member(email, encPassword, nickname, region, gender, bio);
+    }
+
+    // 편의 메소드
+    public void updateProfileImage(ProfileImage profileImage) {
+        this.profileImage = profileImage;
     }
 }

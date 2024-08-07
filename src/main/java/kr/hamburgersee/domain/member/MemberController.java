@@ -13,8 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
-import static kr.hamburgersee.domain.member.MemberConstants.*;
+import static kr.hamburgersee.domain.member.MemberFormConstants.*;
 import static kr.hamburgersee.domain.session.SessionAttrType.*;
 
 @Slf4j
@@ -23,6 +24,7 @@ import static kr.hamburgersee.domain.session.SessionAttrType.*;
 public class MemberController {
     private final MemberService memberService;
     private final SessionService sessionService;
+
     private static final String JOIN_FORM_PATH = "join";
     private static final String LOGIN_FORM_PATH = "login";
 
@@ -34,6 +36,7 @@ public class MemberController {
 
     @PostMapping("/join")
     public String postJoin(
+            MultipartFile profileImageBase64,
             @Valid @ModelAttribute("form") MemberJoinForm form,
             BindingResult bindingResult
     ) {
@@ -41,8 +44,9 @@ public class MemberController {
             return JOIN_FORM_PATH;
         }
 
+        Long joinedMemberId = -1L;
         try {
-            memberService.join(form);
+            joinedMemberId = memberService.join(form);
         } catch (MemberDuplicateEmailException e) {
             // 이메일이 중복된다면
             bindingResult.rejectValue(EMAIL_FIELD, DUPLICATE_ERROR_CODE);
@@ -51,6 +55,17 @@ public class MemberController {
             // 닉네임이 중복된다면
             bindingResult.rejectValue(NICKNAME_FIELD, DUPLICATE_ERROR_CODE);
             return JOIN_FORM_PATH;
+        }
+
+        // 프로필 이미지 저장 로직
+        if (!profileImageBase64.isEmpty()) {
+            try {
+                memberService.updateProfileImage(joinedMemberId, profileImageBase64);
+            } catch (MemberException e) {
+                // 저장에 실패한다면
+                bindingResult.rejectValue(PROFILE_IMAGE_FIELD, FAILED_UPLOAD_ERROR_CODE);
+                return JOIN_FORM_PATH;
+            }
         }
 
         // 성공하면 리다이렉트

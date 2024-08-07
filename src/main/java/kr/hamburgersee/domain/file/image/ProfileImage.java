@@ -14,7 +14,13 @@ public class ProfileImage extends Image {
     @Column(name = "profile_image_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    // 생성자
+    private ProfileImage(String uploadedUrl, String originalFilename) {
+        super(uploadedUrl, originalFilename);
+    }
+
+    // 팩토리 메소드
+    public static ProfileImage create(String uploadedUrl, String originalFilename) {
+        return new ProfileImage(uploadedUrl, originalFilename);
+    }
 }

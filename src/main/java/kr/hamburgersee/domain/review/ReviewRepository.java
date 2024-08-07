@@ -11,7 +11,12 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    @Query("select r from Review r join fetch r.member m where r.id = :reviewId")
+    @Query(value =
+            "select r from Review r " +
+            "join fetch r.member m " +
+            "left join fetch m.profileImage pi " +
+            "where r.id = :reviewId"
+    )
     Optional<Review> findByIdWithMember(@Param("reviewId") Long reviewId);
 
     @Query(
