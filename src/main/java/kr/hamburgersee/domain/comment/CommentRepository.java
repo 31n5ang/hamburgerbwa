@@ -9,6 +9,11 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Query("select c from Comment c join fetch c.member m join fetch c.review r where c.review.id = :reviewId")
+    @Query("select c from Comment c " +
+            "join fetch c.member m " +
+            "left join fetch m.profileImage pi " +
+            "join fetch c.review r " +
+            "where c.review.id = :reviewId"
+    )
     List<Comment> findAllByReviewIdWithMemberAndReview(@Param("reviewId") Long reviewId);
 }
