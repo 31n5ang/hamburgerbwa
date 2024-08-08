@@ -77,7 +77,7 @@ public class ReviewController {
     public String comment(
             @PathVariable("id") Long reviewId,
             Model model,
-            @ModelAttribute("form") CommentCreateForm form,
+            @Valid @ModelAttribute("form") CommentCreateForm form,
             BindingResult bindingResult,
             MemberSessionInfo memberSessionInfo
     ) {

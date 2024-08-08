@@ -11,6 +11,7 @@
                                       class="border-info form-control"
                                       th:placeholder="#{form.label.comment.content}"
                                       rows="3"></textarea>
+                            <p class="form-error" th:errors="*{content}">댓글 본문 에러</p>
                             <button class="mt-1 btn btn-sm btn-block btn-info" type="submit"
                                     th:text="#{form.btn.create}">작성하기
                             </button>
