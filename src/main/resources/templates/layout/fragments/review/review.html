@@ -97,26 +97,49 @@
 </div>
 <div th:fragment="review">
     <div class="container">
-        <div class="text-right">
-            <span th:text="${review.nickname}" class="p-2 badge bg-primary text-white">닉네임</span>
+        <div class="d-flex justify-content-end">
+            <div class="profile rounded-circle mx-1">
+                <!-- 프로필 -->
+                <th:block th:unless="${review.profileUrl}">
+                    <img src="/image/hamburgerbwa_logo_back.png">
+                </th:block>
+                <th:block th:if="${review.profileUrl}">
+                    <img th:src="${review.profileUrl}">
+                </th:block>
+            </div>
+            <div class="d-flex flex-column align-items-center font-weight-bold">
+                <div style="color: darkgray" class="small" th:text="${#temporals.format(review.createdDate, 'yy-MM-dd
+                HH:mm')}">작성일자
+                </div>
+                <div th:text="${review.nickname}" class="p-1">닉네임</div>
+            </div>
         </div>
-        <div class="h3">
-            <span th:text="${review.region.displayName}" class="badge bg-secondary text-white"></span>
-            <span th:text="${review.title}">제목</span>
+        <br />
+        <div class="mb-3">
+            <div class="h2 d-flex justify-content-center">
+                <span th:text="${review.region.displayName}" class="badge badge-info">지역</span> &nbsp;
+                <span th:text="${review.shopName}">가게이름</span>
+            </div>
+            <div>
+                <div th:unless="${#lists.isEmpty(review.tags)}" class="d-flex justify-content-center">
+                    <span th:each="tag : ${review.tags}" class="h4 badge bg-secondary p-1 m-1 text-white"
+                          th:text="${tag.displayName}">
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="shadow-sm my-4 border rounded p-3 review-content">
+        <br />
+        <div class="review-content">
+            <div class="h4">
+                "<span th:text="${review.title}">제목</span>"
+            </div>
+            <hr />
             <div th:utext="${review.content}">본문</div>
             <hr />
             <div class="text-center">
                 <span th:text="#{label.review.good}">좋아요</span><br />
                 <span th:text="${review.good}" class="h3">0</span>
             </div>
-        </div>
-        <div class="shadow-sm my-4 border rounded p-3 text-center">
-            <div th:if="${#lists.isEmpty(review.tags)}" th:text="#{label.review.tag.empty}">버거 태그가 존재하지 않습니다.</div>
-            <span th:each="tag : ${review.tags}" class="h4 badge bg-info p-1 m-1 text-white"
-                  th:text="${tag.displayName}">
-            </span>
         </div>
     </div>
 </div>
@@ -131,7 +154,7 @@
                         <span class="h5 text-info" th:text="${review.region}">지역</span>
                         <span class="h4" th:text="${review.shopName}"> </span>
                     </div>
-                    <div class="thumbnail-image-container"
+                    <div class="cursor-pointer thumbnail-image-container"
                          th:onclick="|location.href='@{/review/{reviewId}(reviewId=${review.reviewId})}'|">
                         <div class="thumbnail-image">
                             <th:block th:if="${review.thumbnailUrl}">

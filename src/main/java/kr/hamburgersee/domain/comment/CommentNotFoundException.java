@@ -1,6 +1,6 @@
 package kr.hamburgersee.domain.comment;
 
-public class CommentNotFoundException extends RuntimeException {
+public class CommentNotFoundException extends CommentException {
     public CommentNotFoundException() {
     }
 

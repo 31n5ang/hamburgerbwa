@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class CommentDto {
+    private Long commentId;
+
     private String content;
 
     private int good;
@@ -20,4 +22,6 @@ public class CommentDto {
     private String nickname;
 
     private String profileUrl;
+
+    private Long reviewId;
 }

@@ -52,4 +52,9 @@ public class Comment extends Date {
                 0
         );
     }
+
+    // 편의 메소드
+    public void updateStatus(CommentStatus status) {
+        this.status = status;
+    }
 }
