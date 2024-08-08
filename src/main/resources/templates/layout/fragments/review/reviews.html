@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="reviews">
+    <div class="container mx-auto row justify-content-center">
+        <div class="review-card-container col-md-6 col-lg-4 col-sm-12 my-2"
+             th:each="review : ${reviews}">
+            <div class="review-card">
+                <div class="card">
+                    <!-- 썸네일이 존재하면 표시, 존재하지 않으면 기본 이미지로 표시 -->
+                    <div class="card-header flex-column text-center">
+                        <span class="h5 text-info" th:text="${review.region}">지역</span>
+                        <span class="h4" th:text="${review.shopName}"> </span>
+                    </div>
+                    <div class="cursor-pointer thumbnail-image-container"
+                         th:onclick="|location.href='@{/review/{reviewId}(reviewId=${review.reviewId})}'|">
+                        <div class="thumbnail-image">
+                            <th:block th:if="${review.thumbnailUrl}">
+                                <img th:src="${review.thumbnailUrl}" class="card-img-top" th:alt="#{alt.img}">
+                            </th:block>
+                            <th:block th:unless="${review.thumbnailUrl}">
+                                <img th:src="@{/image/hamburgerbwa_logo_back.png}" class="card-img-top" th:alt="#{alt.img}">
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${review.title}">
+                            <span th:text="${review.region}" class="btn btn-light">
+                                지역
+                            </span>
+                            리뷰 제목
+                        </h5>
+                        <p class="card-text" th:utext="${review.omittedContent}">리뷰 본문입니다.</p>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-text text-sm-center" th:text="${review.ago}">1시간 전</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 페이징 -->
+        <div class="col-12">
+            <div class="row mt-3">
+                <div th:if="${hasPrevious}" class="col-6">
+                    <button class="btn btn-block btn-outline-info"
+                            th:text="#{btn.prev}"
+                            th:onclick="|location.href='@{/review/list(page=${prevPageNumber})}'|">
+                        이전
+                    </button>
+                </div>
+                <div th:unless="${hasPrevious}" class="col-6">
+                    <button class="btn btn-block btn-outline-info"
+                            th:text="#{btn.prev}" disabled>
+                        이전(비활성화)
+                    </button>
+                </div>
+
+                <div th:if="${hasNext}" class="col-6">
+                    <button class="btn btn-block btn-outline-info"
+                            th:text="#{btn.next}"
+                            th:onclick="|location.href='@{/review/list(page=${nextPageNumber})}'|">
+                        다음
+                    </button>
+                </div>
+                <div th:unless="${hasNext}" class="col-6">
+                    <button class="btn btn-block btn-outline-info"
+                            th:text="#{btn.next}" disabled>
+                        다음(비활성화)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

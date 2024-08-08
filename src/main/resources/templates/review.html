@@ -6,7 +6,8 @@
 </head>
 <article style="max-width: 700px;">
     <div th:replace="~{layout/fragments/review/review :: review}">리뷰 보기</div>
+    <br />
     <div th:replace="~{layout/fragments/comment/comment :: form}">댓글 작성</div>
-    <div th:replace="~{layout/fragments/comment/comment :: comments}">댓글 목록</div>
+    <div th:replace="~{layout/fragments/comment/comments :: comments}">댓글 목록</div>
 </article>
 </html>

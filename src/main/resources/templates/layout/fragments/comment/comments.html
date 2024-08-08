@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="comments">
+    <div class="container my-2">
+        <div>
+            <div class="text-center">
+                <span class="small text-center" th:if="${comments.size() == 0}"
+                      th:text="#{label.comment.empty}"></span>
+            </div>
+            <div>
+                <div th:each="comment, stat : ${comments}">
+                    <th:block th:if="${stat.index != 0}"><hr /></th:block>
+                    <div>
+                        <div class="d-flex justify-content-start">
+                            <div class="profile rounded-circle mr-3" style="flex: none">
+                                <!-- 프로필 -->
+                                <th:block th:unless="${comment.profileUrl}">
+                                    <img src="/image/hamburgerbwa_logo_back.png">
+                                </th:block>
+                                <th:block th:if="${comment.profileUrl}">
+                                    <img th:src="${comment.profileUrl}">
+                                </th:block>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <!-- 작성일자, 닉네임 -->
+                                <div class="d-flex small align-items-center">
+                                    <div style="color: darkgray"
+                                         th:text="${comment.ago}">작성 일자
+                                    </div>
+                                    <th:block th:if="${memberSessionInfo}">
+                                        <!-- 작성자일 경우, 삭제 버튼 표시 -->
+                                        <th:block th:if="${memberSessionInfo.nickname == comment.nickname}">
+                                            <form th:action="@{/comment/delete}" method="post">
+                                                <input type="hidden" name="reviewId" th:value="${comment?.reviewId}">
+                                                <input type="hidden" name="commentId" th:value="${comment?.commentId}">
+                                                <button class="mx-1 border-danger badge-danger badge"
+                                                        type="submit"
+                                                        th:text="#{btn.delete}">
+                                                    삭제
+                                                </button>
+                                            </form>
+                                        </th:block>
+                                    </th:block>
+                                </div>
+                                <span class="font-weight-bold" th:text="${comment.nickname}">닉네임</span>
+
+                                <div>
+                                    <span th:text="${comment.content}">내용</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

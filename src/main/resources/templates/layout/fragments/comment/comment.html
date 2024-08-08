@@ -2,45 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="form">
     <div class="container">
-        <div class="shadow-sm my-4 border rounded p-3">
+        <div class="">
             <div class="row">
-                <div class="col-md-3 p-3 text-center">
-                    <!-- 닉네임 및 프로필 -->
-                    닉네임
-                </div>
-                <div class="col-md-9 p-3">
+                <div class="w-100">
                     <form th:action th:object="${form}" method="post">
                         <div class="form-group">
-                            <label class="col-form-label" th:for="*{content}" th:text="#{form.label.comment.content}"></label>
-                            <textarea th:name="*{content}" th:field="*{content}" class="form-control"
+                            <textarea style="resize: none" th:name="*{content}" th:field="*{content}"
+                                      class="border-info form-control"
+                                      th:placeholder="#{form.label.comment.content}"
                                       rows="3"></textarea>
-                            <button class="btn btn-sm btn-block" type="submit" th:text="#{form.btn.create}">작성하기
+                            <button class="mt-1 btn btn-sm btn-block btn-info" type="submit"
+                                    th:text="#{form.btn.create}">작성하기
                             </button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div th:fragment="comments">
-    <div class="container">
-        <div class="shadow-sm my-4 border rounded p-3">
-            <span class="text-center" th:if="${comments.size() == 0}" th:text="#{label.comment.empty}"></span>
-            <div th:each="comment, stat : ${comments}">
-                <th:block th:if="${stat.index != 0}"><hr /></th:block>
-                <div class="row">
-                    <div class="col-md-3 p-3 text-center">
-                        <!-- 닉네임 및 프로필 -->
-                        <span th:text="${comment.nickname}">닉네임</span>
-                    </div>
-                    <div class="col-md-9 p-3">
-                        <div class="form-group">
-                            <div>
-                                <span th:text="${comment.content}">내용</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

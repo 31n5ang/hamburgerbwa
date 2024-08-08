@@ -49,6 +49,7 @@
                     <input th:name="*{profileImageBase64}" type="file" class="form-control"
                            th:field="*{profileImageBase64}" accept="image/*">
                 </div>
+                <p th:errors="*{profileImageBase64}" class="form-error">프로필 이미지 오류</p>
             </div>
 
             <div class="form-group">
