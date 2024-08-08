@@ -1,5 +1,6 @@
 package kr.hamburgersee.domain.comment;
 
+import kr.hamburgersee.domain.common.DateFormatter;
 import kr.hamburgersee.domain.member.Member;
 import kr.hamburgersee.domain.member.MemberNotFoundException;
 import kr.hamburgersee.domain.member.MemberRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,16 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
+
+    @Transactional
+    public void updateStatus(Long commentId, CommentStatus status) {
+        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+        if (optionalComment.isEmpty()) {
+            throw new CommentNotFoundException("해당 댓글의 id가 존재하지 않습니다.");
+        }
+        Comment comment = optionalComment.get();
+        comment.updateStatus(status);
+    }
 
     @Transactional
     public Long write(Long reviewId, Long memberId, CommentCreateForm form) {
@@ -45,12 +57,17 @@ public class CommentService {
     public List<CommentDto> getCommentDtos(Long reviewId) {
         List<Comment> comments = commentRepository.findAllByReviewIdWithMemberAndReview(reviewId);
         return comments.stream()
-                .map((comment) -> new CommentDto(
-                            comment.getContent(),
-                            0,
-                            null,
-                            comment.getMember().getNickname(),
-                            null
+                .filter(comment -> comment.getStatus() == CommentStatus.SHOW)
+                .map(comment -> new CommentDto(
+                        comment.getId(),
+                        comment.getContent(),
+                        0,
+                        comment.getCreatedDate(),
+                        DateFormatter.getAgoFormatted(comment.getCreatedDate(), LocalDateTime.now()),
+                        comment.getMember().getNickname(),
+                        comment.getMember().getProfileImage() == null ? null :
+                        comment.getMember().getProfileImage().getUrl(),
+                        reviewId
                     ))
                 .toList();
     }
