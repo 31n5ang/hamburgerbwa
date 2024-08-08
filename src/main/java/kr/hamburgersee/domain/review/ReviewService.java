@@ -76,10 +76,12 @@ public class ReviewService {
                 review.getShopName(),
                 review.getContent(),
                 reviewTagTypes,
-                null,
+                review.getCreatedDate(),
+                review.getLastModifiedDate(),
                 review.getGood(),
                 review.getMember().getNickname(),
-                review.getMember().getId()
+                review.getMember().getId(),
+                (review.getMember().getProfileImage() == null ? null : review.getMember().getProfileImage().getUrl())
         );
 
         return reviewDto;
