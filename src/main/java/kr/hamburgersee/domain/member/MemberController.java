@@ -98,7 +98,8 @@ public class MemberController {
             }
             sessionService.create(MEMBER_SESSION_INFO, new MemberSessionInfo(
                     memberAuthenticatedInfo.getMemberId(),
-                    memberAuthenticatedInfo.getNickname()
+                    memberAuthenticatedInfo.getNickname(),
+                    memberAuthenticatedInfo.getMemberProfileUrl()
             ));
         } catch (MemberException e) {
             bindingResult.rejectValue(EMAIL_FIELD, INCORRECT_LOGIN_ERROR_CODE);

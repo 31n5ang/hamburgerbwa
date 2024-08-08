@@ -25,7 +25,7 @@ public class MemberValidator {
     }
 
     public MemberAuthenticatedInfo login(String email, String rawPassword) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        Optional<Member> optionalMember = memberRepository.findByEmailWithProfileImage(email);
         if (optionalMember.isEmpty()) {
             throw new MemberNotFoundException("가입된 이메일이 아닙니다.");
         }
@@ -35,7 +35,7 @@ public class MemberValidator {
             throw new MemberIncorrectPasswordException("비밀번호가 틀립니다.");
         }
 
-        return new MemberAuthenticatedInfo(member.getId(), member.getNickname());
+        return new MemberAuthenticatedInfo(member.getId(), member.getNickname(), member.getProfileImage().getUrl());
     }
 
     private boolean validatePassword(String rawPassword, String encPassword) {

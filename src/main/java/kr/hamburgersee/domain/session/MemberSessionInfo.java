@@ -14,4 +14,5 @@ public class MemberSessionInfo implements Serializable {
 
     private Long memberId;
     private String nickname;
+    private String memberProfileUrl;
 }

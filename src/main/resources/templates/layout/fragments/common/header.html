@@ -22,11 +22,22 @@
         <div class="col-3 d-flex justify-content-center">
             <div th:if="${memberSessionInfo}">
                 <!-- 로그인 상태일 경우 -->
-                <span th:text="${memberSessionInfo.nickname}">nickname</span>
-                &nbsp;|&nbsp;
-                <a th:href="@{/member/my}" th:text="#{label.my}">MY</a>
-                &nbsp;|&nbsp;
-                <a th:href="@{/logout}" th:text="#{label.logout}">로그아웃</a>
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="profile rounded-circle mx-1">
+                        <!-- 프로필 -->
+                        <th:block th:if="${memberSessionInfo.memberProfileUrl}">
+                            <img th:src="${memberSessionInfo.memberProfileUrl}">
+                        </th:block>
+                        <th:block th:unless="${memberSessionInfo.memberProfileUrl}">
+                            <img src="/image/hamburgerbwa_logo_back.png">
+                        </th:block>
+                    </div>
+                    <span class="font-weight-bold" th:text="${memberSessionInfo.nickname}">nickname</span>님
+                    &nbsp;|&nbsp;
+                    <a th:href="@{/member/my}" th:text="#{label.my}">MY</a>
+                    &nbsp;|&nbsp;
+                    <a th:href="@{/logout}" th:text="#{label.logout}">로그아웃</a>
+                </div>
             </div>
 
             <div th:unless="${memberSessionInfo}">

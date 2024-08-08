@@ -8,4 +8,5 @@ import lombok.Data;
 public class MemberAuthenticatedInfo {
     private Long memberId;
     private String nickname;
+    private String memberProfileUrl;
 }
