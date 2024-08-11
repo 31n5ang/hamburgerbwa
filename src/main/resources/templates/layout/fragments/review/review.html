@@ -137,8 +137,32 @@
             <div th:utext="${review.content}">본문</div>
             <hr />
             <div class="text-center">
-                <span th:text="#{label.review.good}">좋아요</span><br />
-                <span th:text="${review.good}" class="h3">0</span>
+                <div>
+                    <span th:text="#{label.review.good}">좋아요</span>
+
+                    <form th:action="@{/review/like}" method="post">
+                        <input type="hidden" name="reviewId" th:value="${review.reviewId}">
+
+                        <div class="mx-auto" th:if="${isLiked}">
+                            <!-- 좋아요를 누른 상태라면 -->
+                            <div>
+                                <span class="h4" th:text="${likedCount}">좋아요 수</span>
+                            </div>
+                            <button type="submit" class="small border-0 bg-transparent btn-none"
+                                    th:text="#{label.review.liked.true}">좋아요 취소</button>
+                        </div>
+
+                        <div th:unless="${isLiked}">
+                            <!-- 좋아요를 누르지 않은 상태라면 -->
+                            <div>
+                                <span class="h4" th:text="${likedCount}">좋아요 수</span>
+                            </div>
+                            <button type="submit" class="small border-0 bg-transparent btn-none"
+                                    th:text="#{label.review.liked.false}">좋아요 등록</button>
+                        </div>
+                    </form>
+                </div>
+                <br />
             </div>
         </div>
     </div>

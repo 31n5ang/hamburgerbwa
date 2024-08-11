@@ -5,6 +5,7 @@ import kr.hamburgersee.domain.annotation.MemberOnly;
 import kr.hamburgersee.domain.comment.CommentCreateForm;
 import kr.hamburgersee.domain.comment.CommentDto;
 import kr.hamburgersee.domain.comment.CommentService;
+import kr.hamburgersee.domain.likes.LikeService;
 import kr.hamburgersee.domain.session.MemberSessionInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
     private final CommentService commentService;
+    private final LikeService likeService;
 
     @Value("${review.paging.sort.by}")
     private final String SORT_BY = "createdDate";
@@ -33,7 +35,8 @@ public class ReviewController {
     private final int PAGE_SIZE = 9;
 
     private static final String REVIEW_CREATE_FORM = "review-create";
-    private static final String REVIEW = "review";
+    private static final String REVIEW_PATH = "review";
+    private static final String REVIEW_URI = "review";
 
     @MemberOnly
     @GetMapping("/create")
@@ -56,20 +59,30 @@ public class ReviewController {
         Long memberId = memberSessionInfo.getMemberId();
         Long reviewId = reviewService.writeProcess(form, memberId);
 
-        return "redirect:/review/" + reviewId;
+        return "redirect:/" + REVIEW_URI + "/" + reviewId;
     }
 
     @GetMapping("/{id}")
     public String review(
             @PathVariable("id") Long reviewId,
-            Model model
+            Model model,
+            MemberSessionInfo memberSessionInfo
     ) {
         ReviewDto reviewDto = reviewService.getReviewDto(reviewId);
         List<CommentDto> commentDtos = commentService.getCommentDtos(reviewId);
+        Long likedCount = likeService.getLikedCount(reviewId);
+
         model.addAttribute("review", reviewDto);
         model.addAttribute("form", new CommentCreateForm());
         model.addAttribute("comments", commentDtos);
-        return REVIEW;
+        model.addAttribute("likedCount", likedCount);
+
+        if (memberSessionInfo != null) {
+            // 로그인된 사용자라면 좋아요 여부를 전달합니다.
+            boolean isLiked = likeService.isLiked(reviewId, memberSessionInfo.getMemberId());
+            model.addAttribute("isLiked", isLiked);
+        }
+        return REVIEW_PATH;
     }
 
     @MemberOnly
@@ -87,7 +100,7 @@ public class ReviewController {
             List<CommentDto> commentDtos = commentService.getCommentDtos(reviewId);
             model.addAttribute("review", reviewDto);
             model.addAttribute("comments", commentDtos);
-            return REVIEW;
+            return REVIEW_PATH;
         }
 
         Long memberId = memberSessionInfo.getMemberId();
@@ -95,13 +108,13 @@ public class ReviewController {
         // TODO ReviewException, MemberException 예외 처리하기
         commentService.write(reviewId, memberId, form);
 
-        return "redirect:/review/" + reviewId;
+        return "redirect:/" + REVIEW_URI + "/" + reviewId;
     }
 
     @GetMapping("/list")
     public String reviews(
             Model model,
-            @PageableDefault(size = 9, sort = SORT_BY, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = PAGE_SIZE, sort = SORT_BY, direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Slice<ReviewCardDto> reviewCardDtos = reviewService.getReviewCardDtos(pageable);
         if (reviewCardDtos.hasNext()) {
@@ -115,6 +128,16 @@ public class ReviewController {
         model.addAttribute("reviews", reviewCardDtos.getContent());
 
         return "reviews";
+    }
+
+    @MemberOnly
+    @PostMapping("/like")
+    public String like(
+            @RequestParam("reviewId") Long reviewId,
+            MemberSessionInfo memberSessionInfo
+    ) {
+        likeService.toggleReviewLike(reviewId, memberSessionInfo.getMemberId());
+        return "redirect:/" + REVIEW_URI + "/" + reviewId;
     }
 }
 

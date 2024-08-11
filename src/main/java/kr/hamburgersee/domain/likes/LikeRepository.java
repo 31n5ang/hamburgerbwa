@@ -12,5 +12,16 @@ import java.util.Optional;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
     @Query("select rl from ReviewLike rl where rl.review = :review and rl.member = :member")
-    Optional<Like> findReviewLikeByReviewAndMember(@Param("review") Review review, @Param("member") Member member);
+    Optional<Like> findByReviewAndMember(@Param("review") Review review, @Param("member") Member member);
+
+    @Query("select count(rl) from ReviewLike rl where rl.review = :review and rl.status = :status")
+    Long countByReview(@Param("review") Review review, @Param("status") LikeStatus status);
+
+    // true=1, false=0 반환
+    @Query(value = "select " +
+            "exists(select 1 from likes as l where (l.review_id = :reviewId and l.member_id = :memberId) " +
+            "and (l.status = 'LIKED'))",
+            nativeQuery = true)
+    Long existsLikedByReviewIdAndMemberId(@Param("reviewId") Long reviewId, @Param("memberId") Long memberId);
+
 }
