@@ -4,17 +4,18 @@ import jakarta.persistence.*;
 import kr.hamburgersee.domain.member.Member;
 import kr.hamburgersee.domain.review.Review;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewLike extends Like {
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "like")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
     private Review review;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 

@@ -71,6 +71,7 @@ public class ReviewService {
                 .toList();
 
         ReviewDto reviewDto = new ReviewDto(
+                review.getId(),
                 review.getTitle(),
                 review.getRegionValue(),
                 review.getShopName(),

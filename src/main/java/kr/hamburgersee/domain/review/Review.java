@@ -51,9 +51,8 @@ public class Review extends Date {
     @JoinColumn(name = "thumbnail_image_id")
     private ThumbnailImage thumbnailImage;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "like_id")
-    private ReviewLike like;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "review")
+    private List<ReviewLike> reviewLike = new ArrayList<>();
 
     // 생성자
     private Review(RegionType regionValue, String shopName, String title, String content,

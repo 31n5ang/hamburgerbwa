@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class ReviewDto {
+    private Long reviewId;
+
     private String title;
 
     private RegionType region;
