@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import static kr.hamburgersee.domain.member.MemberFormConstants.*;
+import static kr.hamburgersee.domain.member.MemberFormConstant.*;
 import static kr.hamburgersee.domain.session.SessionAttrType.*;
 
 @Slf4j

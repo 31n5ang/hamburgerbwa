@@ -1,7 +1,7 @@
 package kr.hamburgersee.domain.member;
 
-public final class MemberFormConstants {
-    private MemberFormConstants() {}
+public final class MemberFormConstant {
+    private MemberFormConstant() {}
     public static final String DUPLICATE_ERROR_CODE = "Duplicate";
     public static final String INCORRECT_ERROR_CODE = "Incorrect";
     public static final String FAILED_ERROR_CODE = "Failed";
