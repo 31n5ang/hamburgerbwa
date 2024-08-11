@@ -35,7 +35,9 @@ public class MemberValidator {
             throw new MemberIncorrectPasswordException("비밀번호가 틀립니다.");
         }
 
-        return new MemberAuthenticatedInfo(member.getId(), member.getNickname(), member.getProfileImage().getUrl());
+        return new MemberAuthenticatedInfo(member.getId(), member.getNickname(),
+                member.getProfileImage() == null ? null : member.getProfileImage().getUrl()
+        );
     }
 
     private boolean validatePassword(String rawPassword, String encPassword) {
