@@ -76,8 +76,10 @@
                 <div th:errors="*{rawPassword}" th:class="form-error">비밀번호 에러</div>
             </div>
             <button type="submit" th:text="#{form.btn.login}" class="btn btn-block btn-primary mt-3">로그인</button>
-            <button th:text="#{form.btn.join}" class="btn btn-block btn-outline-primary mt-1">가입하기</button>
         </form>
+        <div class="my-2 small text-center">
+            <a th:href="@{/join}" th:text="#{label.login.recommend.join}">아직 함버거봐 회원이 아니신가요?</a>
+        </div>
     </div>
 </div>
 </html>
