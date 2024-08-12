@@ -2,6 +2,7 @@ package kr.hamburgersee.domain.review;
 
 import jakarta.validation.Valid;
 import kr.hamburgersee.domain.annotation.MemberOnly;
+import kr.hamburgersee.domain.annotation.RedirectStrategy;
 import kr.hamburgersee.domain.comment.CommentCreateForm;
 import kr.hamburgersee.domain.comment.CommentDto;
 import kr.hamburgersee.domain.comment.CommentService;
@@ -130,7 +131,7 @@ public class ReviewController {
         return "reviews";
     }
 
-    @MemberOnly
+    @MemberOnly(redirectStrategy = RedirectStrategy.REFERER)
     @PostMapping("/like")
     public String like(
             @RequestParam("reviewId") Long reviewId,
