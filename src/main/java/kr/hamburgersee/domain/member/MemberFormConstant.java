@@ -12,4 +12,5 @@ public final class MemberFormConstant {
     public static final String EMAIL_FIELD = "email";
     public static final String NICKNAME_FIELD = "nickname";
     public static final String PROFILE_IMAGE_FIELD = "profileImageBase64";
+    public static final String RAW_PASSWORD_FIELD = "rawPassword";
 }
