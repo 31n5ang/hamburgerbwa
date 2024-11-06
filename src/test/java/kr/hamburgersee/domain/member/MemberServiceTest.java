@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import kr.hamburgersee.domain.common.RegionType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,7 @@ class MemberServiceTest {
 
     @Test
     @Transactional
+    @DisplayName("회원가입_이메일_중복_예외")
     void duplicateEmail() {
         MemberJoinForm form1 = MemberJoinForm.createDefaultEmpty();
         form1.setEmail(EMAIL_1);
@@ -45,6 +47,7 @@ class MemberServiceTest {
 
     @Test
     @Transactional
+    @DisplayName("회원가입_닉네임_중복_예외")
     void duplicateNickname() {
         MemberJoinForm form1 = MemberJoinForm.createDefaultEmpty();
         form1.setEmail(EMAIL_1);

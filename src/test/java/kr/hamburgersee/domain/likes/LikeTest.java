@@ -2,6 +2,7 @@ package kr.hamburgersee.domain.likes;
 
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +38,7 @@ class LikeTest {
     }
 
     @Test
+    @DisplayName("좋아요_개수_체크")
     public void likes_count() {
         String query = "SELECT count(l) FROM Like l WHERE l.status = :status";
         Long result = em.createQuery(query, Long.class)
@@ -47,6 +49,7 @@ class LikeTest {
     }
 
     @Test
+    @DisplayName("좋아요_싫어요_차이_체크")
     public void likes_and_unlikes_count() {
         String query = "SELECT count(l) FROM Like l WHERE l.status = :status";
         Long likes = em.createQuery(query, Long.class)
