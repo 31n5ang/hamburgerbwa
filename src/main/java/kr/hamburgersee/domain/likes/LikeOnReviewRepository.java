@@ -22,6 +22,5 @@ public interface LikeOnReviewRepository extends JpaRepository<Like, Long> {
             "exists(select 1 from likes as l where (l.review_id = :reviewId and l.member_id = :memberId) " +
             "and (l.status = 'LIKED'))",
             nativeQuery = true)
-    Long existsLikedByReviewIdAndMemberId(@Param("reviewId") Long reviewId, @Param("memberId") Long memberId);
-
+    boolean existsLikedByReviewIdAndMemberId(@Param("reviewId") Long reviewId, @Param("memberId") Long memberId);
 }

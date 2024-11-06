@@ -67,7 +67,7 @@ public class LikeOnReviewService {
             throw new MemberNotFoundException("해당 회원의 id가 존재하지 않습니다.");
         }
 
-        return likeRepository.existsLikedByReviewIdAndMemberId(reviewId, memberId) == 1;
+        return likeOnReviewRepository.existsLikedByReviewIdAndMemberId(reviewId, memberId);
     }
 
     public Long getLikedCount(Long reviewId) {
