@@ -6,7 +6,7 @@ import kr.hamburgersee.domain.annotation.RedirectStrategy;
 import kr.hamburgersee.domain.comment.CommentCreateForm;
 import kr.hamburgersee.domain.comment.CommentDto;
 import kr.hamburgersee.domain.comment.CommentService;
-import kr.hamburgersee.domain.likes.LikeService;
+import kr.hamburgersee.domain.likes.LikeOnReviewService;
 import kr.hamburgersee.domain.session.MemberSessionInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
     private final CommentService commentService;
-    private final LikeService likeService;
+    private final LikeOnReviewService likeOnReviewService;
 
     @Value("${review.paging.sort.by}")
     private final String SORT_BY = "createdDate";
@@ -71,7 +71,7 @@ public class ReviewController {
     ) {
         ReviewDto reviewDto = reviewService.getReviewDto(reviewId);
         List<CommentDto> commentDtos = commentService.getCommentDtos(reviewId);
-        Long likedCount = likeService.getLikedCount(reviewId);
+        Long likedCount = likeOnReviewService.getLikedCount(reviewId);
 
         model.addAttribute("review", reviewDto);
         model.addAttribute("form", new CommentCreateForm());
@@ -80,7 +80,7 @@ public class ReviewController {
 
         if (memberSessionInfo != null) {
             // 로그인된 사용자라면 좋아요 여부를 전달합니다.
-            boolean isLiked = likeService.isLiked(reviewId, memberSessionInfo.getMemberId());
+            boolean isLiked = likeOnReviewService.isLiked(reviewId, memberSessionInfo.getMemberId());
             model.addAttribute("isLiked", isLiked);
         }
         return REVIEW_PATH;
@@ -137,7 +137,7 @@ public class ReviewController {
             @RequestParam("reviewId") Long reviewId,
             MemberSessionInfo memberSessionInfo
     ) {
-        likeService.toggleReviewLike(reviewId, memberSessionInfo.getMemberId());
+        likeOnReviewService.toggleReviewLike(reviewId, memberSessionInfo.getMemberId());
         return "redirect:/" + REVIEW_URI + "/" + reviewId;
     }
 }

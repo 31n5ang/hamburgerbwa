@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReviewLike extends Like {
+public class LikeOnReview extends Like {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
@@ -20,14 +20,14 @@ public class ReviewLike extends Like {
     private Member member;
 
     // 생성자
-    private ReviewLike(Review review, Member member) {
+    private LikeOnReview(Review review, Member member) {
         this.review = review;
         this.member = member;
     }
 
     // 팩토리 메소드
     public static Like create(Review review, Member member, LikeStatus status) {
-        Like like = new ReviewLike(review, member);
+        Like like = new LikeOnReview(review, member);
         like.updateState(status);
         return like;
     }

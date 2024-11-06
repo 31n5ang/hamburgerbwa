@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface LikeRepository extends JpaRepository<Like, Long> {
-    @Query("select rl from ReviewLike rl where rl.review = :review and rl.member = :member")
+public interface LikeOnReviewRepository extends JpaRepository<Like, Long> {
+    @Query("select rl from LikeOnReview rl where rl.review = :review and rl.member = :member")
     Optional<Like> findByReviewAndMember(@Param("review") Review review, @Param("member") Member member);
 
-    @Query("select count(rl) from ReviewLike rl where rl.review = :review and rl.status = :status")
+    @Query("select count(rl) from LikeOnReview rl where rl.review = :review and rl.status = :status")
     Long countByReview(@Param("review") Review review, @Param("status") LikeStatus status);
 
     // true=1, false=0 반환

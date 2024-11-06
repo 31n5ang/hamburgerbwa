@@ -16,8 +16,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class LikeService {
-    private final LikeRepository likeRepository;
+public class LikeOnReviewService {
+    private final LikeOnReviewRepository likeOnReviewRepository;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
 
@@ -37,12 +37,12 @@ public class LikeService {
         Review review = optionalReview.get();
         Member member = optionalMember.get();
 
-        Optional<Like> optionalLike = likeRepository.findByReviewAndMember(review, member);
+        Optional<Like> optionalLike = likeOnReviewRepository.findByReviewAndMember(review, member);
 
         if (optionalLike.isEmpty()) {
             // 처음 좋아요를 누른다면 저장합니다.
-            Like like = ReviewLike.create(review, member, LikeStatus.LIKED);
-            likeRepository.save(like);
+            Like like = LikeOnReview.create(review, member, LikeStatus.LIKED);
+            likeOnReviewRepository.save(like);
         } else {
             // 이전에 해당 리뷰의 좋아요를 눌렀다면 토글 시킵니다.
             Like beforeLiked = optionalLike.get();
@@ -74,6 +74,6 @@ public class LikeService {
         Review review = reviewRepository.findById(reviewId).orElseThrow(
                 () -> new ReviewNotFoundException("해당 리뷰의 id가 존재하지 않습니다."));
 
-        return likeRepository.countByReview(review, LikeStatus.LIKED);
+        return likeOnReviewRepository.countByReview(review, LikeStatus.LIKED);
     }
 }

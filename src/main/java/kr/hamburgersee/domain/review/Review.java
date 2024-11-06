@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import kr.hamburgersee.domain.common.RegionType;
 import kr.hamburgersee.domain.common.Date;
 import kr.hamburgersee.domain.file.image.ThumbnailImage;
-import kr.hamburgersee.domain.likes.ReviewLike;
+import kr.hamburgersee.domain.likes.LikeOnReview;
 import kr.hamburgersee.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -52,7 +52,7 @@ public class Review extends Date {
     private ThumbnailImage thumbnailImage;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "review")
-    private List<ReviewLike> reviewLike = new ArrayList<>();
+    private List<LikeOnReview> likeOnReview = new ArrayList<>();
 
     // 생성자
     private Review(RegionType regionValue, String shopName, String title, String content,
