@@ -2,15 +2,10 @@ package kr.hamburgersee.domain.file;
 
 import org.springframework.util.StringUtils;
 
-import java.util.Base64;
 import java.util.UUID;
 
-public final class FileUtils {
-    private FileUtils() {}
-
-    public static byte[] decodeBase64(String base64) {
-        return Base64.getDecoder().decode(base64);
-    }
+public final class FileNameUtils {
+    private FileNameUtils() {}
 
     public static String generateUploadFilename(String ext) {
         StringBuilder uploadFilename = new StringBuilder();
