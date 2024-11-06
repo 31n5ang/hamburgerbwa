@@ -1,6 +1,6 @@
 package kr.hamburgersee.domain.file.image;
 
-import kr.hamburgersee.domain.file.FileUtils;
+import kr.hamburgersee.domain.file.FileNameUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +20,8 @@ public class ProfileImageService {
     public Long uploadProfileImage(MultipartFile profileFile) {
         try {
             String originalFilename = profileFile.getOriginalFilename();
-            String ext = FileUtils.parseExt(originalFilename);
-            String uploadFilename = FileUtils.generateUploadFilename(ext);
+            String ext = FileNameUtils.parseExt(originalFilename);
+            String uploadFilename = FileNameUtils.generateUploadFilename(ext);
             String uploadedUrl = imageManager.uploadImage(profileFile.getBytes(), uploadFilename, MEMBER_PROFILE_IMAGE);
 
             ProfileImage profileImage = ProfileImage.create(uploadedUrl, originalFilename);

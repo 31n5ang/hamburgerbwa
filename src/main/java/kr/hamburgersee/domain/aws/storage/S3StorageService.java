@@ -2,7 +2,7 @@ package kr.hamburgersee.domain.aws.storage;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import kr.hamburgersee.domain.file.FileUtils;
+import kr.hamburgersee.domain.file.FileNameUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class S3StorageService implements StorageService {
 
     @Override
     public String upload(byte[] file, String uploadFilename, StorageUploadFileType fileType) {
-        String pureExt = FileUtils.parsePureExt(uploadFilename);
+        String pureExt = FileNameUtils.parsePureExt(uploadFilename);
         // content-type이 이미지가 아닐 땐..?
         ObjectMetadata metadata = createDefaultObjectMetadata(file, "image/" + pureExt);
         String uploadUrl = fileType.path + uploadFilename;
