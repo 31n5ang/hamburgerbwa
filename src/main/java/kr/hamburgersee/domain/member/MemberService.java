@@ -21,12 +21,12 @@ public class MemberService {
     private final ProfileImageRepository profileImageRepository;
 
     @Transactional(readOnly = true)
-    public MemberAuthenticatedInfo authenticate(MemberLoginForm form) {
+    public MemberAuthenticatedInfo authenticate(MemberLoginForm form) throws MemberException {
         return memberValidator.login(form.getEmail(), form.getRawPassword());
     }
 
     @Transactional
-    public Long join(MemberJoinForm form) {
+    public Long join(MemberJoinForm form) throws MemberException {
         Member createdMember = Member.create(
                 form.getEmail(),
                 encoder.encode(form.getRawPassword()),
