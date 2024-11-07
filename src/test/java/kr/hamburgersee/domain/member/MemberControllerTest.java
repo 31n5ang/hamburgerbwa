@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -72,6 +73,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("회원가입_성공")
     void postJoinSuccess() throws Exception {
+        // Given
         MemberJoinForm memberJoinForm = getSampleMemberJoinForm();
 
         MockMultipartFile profileImage = getMockMultipartFile();
@@ -79,7 +81,10 @@ class MemberControllerTest {
         // 회원 저장 성공
         when(memberService.join(any())).thenReturn(1L);
 
+        // When
         mockMvc.perform(getJoinRequestBuilder(profileImage, memberJoinForm))
+
+                // Then
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
     }
@@ -87,6 +92,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("회원가입_실패_이메일_중복")
     void postJoinFailByDuplicateEmail() throws Exception {
+        // Given
         MemberJoinForm memberJoinForm = getSampleMemberJoinForm();
 
         MockMultipartFile profileImage = getMockMultipartFile();
@@ -94,7 +100,10 @@ class MemberControllerTest {
         // 이메일 중복 예외 발생
         when(memberService.join(any())).thenThrow(new MemberDuplicateEmailException());
 
+        // When
         mockMvc.perform(getJoinRequestBuilder(profileImage, memberJoinForm))
+
+                // Then
                 .andExpect(status().isOk())
                 .andExpect(view().name(JOIN_FORM_PATH))
                 .andExpect(model().attributeHasFieldErrors(MODEL_FORM_NAME, EMAIL_FIELD));
@@ -103,6 +112,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("회원가입_실패_닉네임_중복")
     void postJoinFailByDuplicateNickname() throws Exception {
+        // Given
         MemberJoinForm memberJoinForm = getSampleMemberJoinForm();
 
         MockMultipartFile profileImage = getMockMultipartFile();
@@ -110,7 +120,10 @@ class MemberControllerTest {
         // 닉네임 중복 예외 발생
         when(memberService.join(any())).thenThrow(new MemberDuplicateNicknameException());
 
+        // When
         mockMvc.perform(getJoinRequestBuilder(profileImage, memberJoinForm))
+
+                // Then
                 .andExpect(status().isOk())
                 .andExpect(view().name(JOIN_FORM_PATH))
                 .andExpect(model().attributeHasFieldErrors(MODEL_FORM_NAME, NICKNAME_FIELD));
@@ -127,14 +140,18 @@ class MemberControllerTest {
     @Test
     @DisplayName("로그인_성공")
     void postLoginSuccess() throws Exception{
+        // Given
         MemberLoginForm memberLoginForm = getSampleMemberLoginForm();
 
         MemberAuthenticatedInfo authenticatedInfo = getMockAuthenticatedInfo();
         when(memberService.authenticate(any())).thenReturn(authenticatedInfo);
         when(sessionService.find(SessionAttrType.MEMBER_SESSION_INFO)).thenReturn(null);
 
+        // When
         // 요청 검증
         mockMvc.perform(getLoginRequestBuilder(memberLoginForm).param("redirectUri", "/test"))
+
+                // Then
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/test"));
 
@@ -145,11 +162,15 @@ class MemberControllerTest {
     @Test
     @DisplayName("로그인_실패")
     void postLoginFailByNotValidEmail() throws Exception{
+        // Given
         MemberLoginForm memberLoginForm = getSampleMemberLoginForm();
 
         when(memberService.authenticate(any())).thenThrow(new MemberException());
 
+        // When
         mockMvc.perform(getLoginRequestBuilder(memberLoginForm))
+
+                // Then
                 .andExpect(status().isOk())
                 .andExpect(view().name(LOGIN_FORM_PATH));
     }
