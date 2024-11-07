@@ -18,9 +18,7 @@ public interface LikeOnReviewRepository extends JpaRepository<Like, Long> {
     Long countByReview(@Param("review") Review review, @Param("status") LikeStatus status);
 
     // true=1, false=0 반환
-    @Query(value = "select " +
-            "exists(select 1 from likes as l where (l.review_id = :reviewId and l.member_id = :memberId) " +
-            "and (l.status = 'LIKED'))",
-            nativeQuery = true)
-    boolean existsLikedByReviewIdAndMemberId(@Param("reviewId") Long reviewId, @Param("memberId") Long memberId);
+    @Query("SELECT COUNT(l) > 0 FROM LikeOnReview l WHERE l.review.id = :reviewId AND l.member.id = :memberId AND l" +
+            ".status = 'LIKED'")
+    Boolean existsLikedByReviewIdAndMemberId(@Param("reviewId") Long reviewId, @Param("memberId") Long memberId);
 }
