@@ -1,68 +1,173 @@
 package kr.hamburgersee.domain.member;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import kr.hamburgersee.domain.common.RegionType;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import kr.hamburgersee.domain.file.image.ProfileImage;
+import kr.hamburgersee.domain.file.image.ProfileImageRepository;
+import kr.hamburgersee.domain.file.image.ProfileImageService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Field;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class MemberServiceTest {
-    private static final String RAW_PASSWORD = "rawPassword";
-    private static final String NICKNAME_1 = "nickname1";
-    private static final String NICKNAME_2 = "nickname2";
-    public static final String EMAIL_1 = "email1";
-    public static final String EMAIL_2 = "email2";
+    @Autowired
+    private MemberService memberService;
 
-    @PersistenceContext EntityManager em;
-    @Autowired MemberService memberService;
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private MemberRepository memberRepository;
+
+    @MockBean
+    private MemberValidator memberValidator;
+
+    @MockBean
+    private ProfileImageService profileImageService;
+
+    @MockBean
+    private ProfileImageRepository profileImageRepository;
 
     @Test
-    @Transactional
-    @DisplayName("회원가입_이메일_중복_예외")
-    void duplicateEmail() {
-        MemberJoinForm form1 = MemberJoinForm.createDefaultEmpty();
-        form1.setEmail(EMAIL_1);
-        form1.setRawPassword(RAW_PASSWORD);
-        form1.setNickname(NICKNAME_1);
+    @DisplayName("회원검증_성공")
+    void authenticateSuccess() {
+        // Given
+        MemberLoginForm memberLoginForm = getSampleMemberLoginForm();
+        MemberAuthenticatedInfo memberAuthenticatedInfo = getSampleMemberAuthenticatedInfo();
+        when(memberValidator.login(any(), any())).thenReturn(memberAuthenticatedInfo);
 
-        MemberJoinForm form2 = MemberJoinForm.createDefaultEmpty();
-        form2.setEmail(EMAIL_1);
-        form2.setRawPassword(RAW_PASSWORD);
-        form2.setNickname(NICKNAME_2);
+        // When
+        MemberAuthenticatedInfo successAuthenticatedInfo = memberService.authenticate(memberLoginForm);
 
-        memberService.join(form1);
-
-        Assertions.assertThatThrownBy(() -> {
-            memberService.join(form2);
-        }).isInstanceOf(MemberDuplicateEmailException.class);
+        // Then
+        assertThat(memberAuthenticatedInfo).isEqualTo(successAuthenticatedInfo);
     }
 
     @Test
-    @Transactional
-    @DisplayName("회원가입_닉네임_중복_예외")
-    void duplicateNickname() {
-        MemberJoinForm form1 = MemberJoinForm.createDefaultEmpty();
-        form1.setEmail(EMAIL_1);
-        form1.setRawPassword(RAW_PASSWORD);
-        form1.setNickname(NICKNAME_1);
+    @DisplayName("회원검증_실패")
+    void authenticateFail() {
+        // Given
+        MemberLoginForm memberLoginForm = getSampleMemberLoginForm();
+        when(memberValidator.login(any(), any())).thenThrow(new MemberException());
 
-        MemberJoinForm form2 = MemberJoinForm.createDefaultEmpty();
-        form2.setEmail(EMAIL_2);
-        form2.setRawPassword(RAW_PASSWORD);
-        form2.setNickname(NICKNAME_1);
+        // When & Then
+        assertThrows(MemberException.class, () -> {
+            memberService.authenticate(memberLoginForm);
+        });
+    }
 
-        memberService.join(form1);
+    @Test
+    @DisplayName("회원가입_성공")
+    void joinSuccess() throws NoSuchFieldException, IllegalAccessException {
+        // Given
+        MemberJoinForm memberJoinForm = MemberJoinForm.createDefaultEmpty();
 
-        Assertions.assertThatThrownBy(() -> {
-            memberService.join(form2);
-        }).isInstanceOf(MemberDuplicateNicknameException.class);
+        // 저장될 회원 객체의 id를 조작
+        Member savedMember = new Member();
+        Field idField = Member.class.getDeclaredField("id");
+        idField.setAccessible(true);
+        idField.set(savedMember, 1L);
+
+        doNothing().when(memberValidator).join(any(Member.class));
+        when(memberRepository.save(any(Member.class))).thenReturn(savedMember);
+        when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
+
+        // When
+        Long memberId = memberService.join(memberJoinForm);
+
+        // Then
+        assertThat(memberId).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("회원가입_실패")
+    void joinFail() {
+        // Given
+        MemberJoinForm memberJoinForm = MemberJoinForm.createDefaultEmpty();
+
+        doThrow(new MemberException()).when(memberValidator).join(any());
+
+        // When & Then
+        assertThrows(MemberException.class, () -> {
+            memberService.join(memberJoinForm);
+        });
+    }
+
+    @Test
+    @DisplayName("회원_프로필_이미지_업데이트_성공")
+    void updateProfileImageSuccess() {
+        // Given
+        Long memberId = 1L;
+
+        Member member = new Member();
+        MultipartFile multipartFile = mock(MultipartFile.class);
+        ProfileImage profileImage = ProfileImage.create("testUri", "testest.png");
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(profileImageService.uploadProfileImage(any())).thenReturn(1L);
+        when(profileImageRepository.findById(1L)).thenReturn(Optional.of(profileImage));
+
+        // When
+        memberService.updateProfileImage(memberId, multipartFile);
+
+        // Then
+        assertThat(member.getProfileImage()).isEqualTo(profileImage);
+    }
+
+    @Test
+    @DisplayName("회원_프로필_이미지_업데이트_예외_회원id_존재X")
+    void updateProfileImageFailByInvalidMemberId() {
+        // Given
+        Long memberId = 1L;
+
+        MultipartFile multipartFile = mock(MultipartFile.class);
+
+        when(memberRepository.findById(any())).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(MemberNotFoundException.class, () -> {
+            memberService.updateProfileImage(memberId, multipartFile);
+        });
+    }
+
+    @Test
+    @DisplayName("회원_프로필_이미지_업데이트_예외_프로필id_존재X")
+    void updateProfileImageFailByInvalidProfileId() {
+        // Given
+        Long memberId = 1L;
+        Long profileId = 1L;
+
+        Member member = new Member();
+
+        MultipartFile multipartFile = mock(MultipartFile.class);
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
+        when(profileImageService.uploadProfileImage(multipartFile)).thenReturn(profileId);
+        when(profileImageRepository.findById(any())).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(MemberException.class, () -> {
+            memberService.updateProfileImage(memberId, multipartFile);
+        });
+    }
+
+    private static MemberLoginForm getSampleMemberLoginForm() {
+        return new MemberLoginForm("test@test.com", "testPassword");
+    }
+
+    private static MemberAuthenticatedInfo getSampleMemberAuthenticatedInfo() {
+        return new MemberAuthenticatedInfo(1L, "testNickname", "http" +
+                "://test/test.jpg");
     }
 }
