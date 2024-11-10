@@ -15,9 +15,7 @@ import static kr.hamburgersee.domain.session.SessionAttrType.MEMBER_SESSION_INFO
 public class MemberSessionInfoArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        boolean hasMemberOnlyAnnotation = parameter.hasMethodAnnotation(MemberOnly.class);
-        boolean hasMemberSessionInfo = MemberSessionInfo.class.isAssignableFrom(parameter.getParameterType());
-        return hasMemberOnlyAnnotation && hasMemberSessionInfo;
+        return MemberSessionInfo.class.isAssignableFrom(parameter.getParameterType());
     }
 
     @Override
