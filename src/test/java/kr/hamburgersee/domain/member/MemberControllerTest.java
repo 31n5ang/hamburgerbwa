@@ -39,13 +39,13 @@ class MemberControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    MemberService memberService;
+    private MemberService memberService;
 
     @Mock
-    SessionService sessionService;
+    private SessionService sessionService;
 
     @InjectMocks
-    MemberController memberController;
+    private MemberController memberController;
 
     @BeforeEach
     void setup() {
