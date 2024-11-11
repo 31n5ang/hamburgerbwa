@@ -37,6 +37,7 @@ public class ReviewController {
 
     private static final String REVIEW_CREATE_FORM = "review-create";
     private static final String REVIEW_PATH = "review";
+    private static final String REVIEWS_PATH = "reviews";
     private static final String REVIEW_URI = "review";
 
     @MemberOnly
@@ -128,7 +129,7 @@ public class ReviewController {
         model.addAttribute("hasPrevious", reviewCardDtos.hasPrevious());
         model.addAttribute("reviews", reviewCardDtos.getContent());
 
-        return "reviews";
+        return REVIEWS_PATH;
     }
 
     @MemberOnly(redirectStrategy = RedirectStrategy.REFERER)
