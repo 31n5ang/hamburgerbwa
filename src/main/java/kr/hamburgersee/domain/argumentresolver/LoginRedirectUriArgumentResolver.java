@@ -14,6 +14,7 @@ import static kr.hamburgersee.domain.session.SessionAttrType.REQUEST_REDIRECT_UR
 public class LoginRedirectUriArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
+        // @LoginRedirectUri String redirectUri 형태의 파라미터를 Resolve 합니다.
         boolean hasLoginRedirectUriAnnotation = parameter.hasParameterAnnotation(LoginRedirectUri.class);
         boolean hasString = String.class.isAssignableFrom(parameter.getParameterType());
         return hasLoginRedirectUriAnnotation && hasString;
@@ -31,6 +32,4 @@ public class LoginRedirectUriArgumentResolver implements HandlerMethodArgumentRe
 
         return "/";
     }
-
-
 }
