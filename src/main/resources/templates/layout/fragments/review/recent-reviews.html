@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<div th:fragment="recent-reviews">
+    <div class="container">
+        <div>
+            <div th:each="review : ${reviews}"
+                 th:onclick="|location.href='@{/review/{id}(id=${review.reviewId})}'|"
+                 class="review-card-container row my-4 align-items-center">
+                <!-- 썸네일 이미지 시작 -->
+                <div class="thumbnail-image-container col-2">
+                    <th:block th:if="${review.thumbnailUrl}">
+                        <img th:src="${review.thumbnailUrl}" th:alt="#{alt.img}" class="thumbnail-image">
+                    </th:block>
+                    <th:block th:unless="${review.thumbnailUrl}">
+                        <img th:src="@{/image/hamburgerbwa_logo_back.png}" th:alt="#{alt.img}" class="thumbnail-image">
+                    </th:block>
+                </div>
+
+                <!-- 지역, 가게 이름 시작 -->
+                <div class="col-3 text-center">
+                    <div>
+                        <span th:text="${review.shopName}" class="font-weight-bold">가게 이름</span>
+                    </div>
+                    <th:block th:unless="${review.region == '기타'}">
+                        <div>
+                            <span th:text="${review.region}" class="small">지역</span>
+                        </div>
+                    </th:block>
+                </div>
+
+                <!-- 제목 및 본문 시작 -->
+                <div class="col-5 d-flex flex-column justify-content-center">
+                    <div class="flex-nowrap overflow-hidden">
+                        <span th:text="${review.title}">제목</span>
+                    </div>
+                    <div>
+                        <span class="small" th:text="${review.omittedContent}">본문</span>
+                    </div>
+                    <!-- 태그 -->
+                    <div>
+                        <th:block th:each="tag : ${review.tagTypes}">
+                            <span th:text="${tag.displayName}" class="badge badge-info"></span>
+                        </th:block>
+                    </div>
+                </div>
+
+                <div class="col-2 text-center">
+                    <!-- 닉네임 -->
+                    <div class="badge btn-sm badge-light">
+                        <span th:text="${review.username}">닉네임</span>
+                    </div>
+
+                    <!-- 몇 시간 전 -->
+                    <div>
+                        <span th:text="${review.ago}" class="small">3시간 전</span>
+                        <span th:text="${#temporals.format(review.createdDate, 'HH:mm')}" class="small"
+                              style="color: darkgray;">10
+                            :30</span>
+                    </div>
+
+                    <!-- 좋아요 -->
+                    <div>
+                        <span>🍟&nbsp;<th:block th:text="${review.likeCount}">1</th:block></span>
+                    </div>
+                </div>
+
+                <!-- 구분줄 -->
+                <hr class="w-100 border-top my-2">
+            </div>
+
+            <div class="row justify-content-center text-center">
+                <!-- 이전 -->
+                <th:block th:if="${hasPrevious}">
+                    <div class="col-2 btn btn-primary mx-1"
+                         th:onclick="|location.href='@{/review/list(page=${prevPageNumber})}'|">
+                            <span th:text="#{btn.prev}">이전</span>
+                    </div>
+                </th:block>
+
+                <!-- 다음 -->
+                <th:block th:if="${hasNext}">
+                    <div class="col-2 btn btn-primary mx-1"
+                         th:onclick="|location.href='@{/review/list(page=${nextPageNumber})}'|">
+                            <span th:text="#{btn.next}">다음</span>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
