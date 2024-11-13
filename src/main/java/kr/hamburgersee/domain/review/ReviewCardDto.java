@@ -19,4 +19,5 @@ public class ReviewCardDto {
     private List<ReviewTagType> tagTypes;
     private String region;
     private String ago; // ex) 1시간 전, 1일 전
+    private Long likeCount;
 }

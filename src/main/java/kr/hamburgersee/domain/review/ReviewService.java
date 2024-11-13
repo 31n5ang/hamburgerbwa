@@ -2,6 +2,7 @@ package kr.hamburgersee.domain.review;
 
 import kr.hamburgersee.domain.common.DateFormatter;
 import kr.hamburgersee.domain.file.image.*;
+import kr.hamburgersee.domain.likes.LikeOnReviewService;
 import kr.hamburgersee.domain.member.Member;
 import kr.hamburgersee.domain.member.MemberNotFoundException;
 import kr.hamburgersee.domain.member.MemberRepository;
@@ -28,6 +29,7 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final ThumbnailImageService thumbnailImageService;
     private final ReviewImageService reviewImageService;
+    private final LikeOnReviewService likeOnReviewService;
 
     @Value("${review.content.omitted-length}")
     private int CONTENT_OMITTED_LENGTH;
@@ -124,7 +126,8 @@ public class ReviewService {
                         .map(reviewTag -> reviewTag.getTagType())
                         .toList(),
                 review.getRegionValue().displayName,
-                DateFormatter.getAgoFormatted(review.getCreatedDate(), LocalDateTime.now())
+                DateFormatter.getAgoFormatted(review.getCreatedDate(), LocalDateTime.now()),
+                likeOnReviewService.getLikedCount(review.getId())
         ));
     }
 }
