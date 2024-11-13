@@ -4,7 +4,8 @@
 <head>
     <title th:text="#{page.title.review}">함버거봐 - 리뷰</title>
 </head>
-<article class="w-100">
-    <div th:replace="~{layout/fragments/review/reviews :: reviews}">최근 리뷰</div>
+<article style="max-width: 800px;">
+<!--    <div th:replace="~{layout/fragments/review/reviews :: reviews}">최근 리뷰</div>-->
+    <div th:replace="~{layout/fragments/review/recent-reviews :: recent-reviews}">최근 리뷰</div>
 </article>
 </html>
