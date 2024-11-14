@@ -335,7 +335,8 @@ class ReviewControllerTest {
                 id, "test" + id, "title" + id, "content" + id, "name" + id,
                 "thumb/url" + id, LocalDateTime.now(),
                 new ArrayList<>(), "대전",
-                DateFormatter.getAgoFormatted(LocalDateTime.now(), LocalDateTime.now().plusMinutes(2L))
+                DateFormatter.getAgoFormatted(LocalDateTime.now(), LocalDateTime.now().plusMinutes(2L)),
+                3L
         );
     }
 }
