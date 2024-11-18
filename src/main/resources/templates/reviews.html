@@ -5,7 +5,6 @@
     <title th:text="#{page.title.review}">함버거봐 - 리뷰</title>
 </head>
 <article style="max-width: 800px;">
-<!--    <div th:replace="~{layout/fragments/review/reviews :: reviews}">최근 리뷰</div>-->
-    <div th:replace="~{layout/fragments/review/recent-reviews :: recent-reviews}">최근 리뷰</div>
+    <div th:replace="~{layout/fragments/review/reviews :: reviews-pageable-keyword}">최근 리뷰</div>
 </article>
 </html>
