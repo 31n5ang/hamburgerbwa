@@ -107,7 +107,6 @@ public class ReviewController {
 
         Long memberId = memberSessionInfo.getMemberId();
 
-        // TODO ReviewException, MemberException 예외 처리하기
         commentService.write(reviewId, memberId, form);
 
         return "redirect:/" + REVIEW_URI + "/" + reviewId;
