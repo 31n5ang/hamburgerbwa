@@ -116,18 +116,22 @@ public class ReviewController {
     @GetMapping("/list")
     public String reviews(
             Model model,
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
             @PageableDefault(size = PAGE_SIZE, sort = SORT_BY, direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Slice<ReviewCardDto> reviewCardDtos = reviewService.getReviewCardDtos(pageable);
-        if (reviewCardDtos.hasNext()) {
-            model.addAttribute("nextPageNumber", reviewCardDtos.nextPageable().getPageNumber());
-        }
-        if (reviewCardDtos.hasPrevious()) {
-            model.addAttribute("prevPageNumber", reviewCardDtos.previousPageable().getPageNumber());
-        }
-        model.addAttribute("hasNext", reviewCardDtos.hasNext());
-        model.addAttribute("hasPrevious", reviewCardDtos.hasPrevious());
-        model.addAttribute("reviews", reviewCardDtos.getContent());
+        ReviewSearchDto reviewSearchDto = ReviewSearchDto
+                .builder()
+                .keyword(keyword)
+                .isKeywordInTitle(true)
+                .isKeywordInContent(true)
+                .isKeywordInShopName(true)
+                .build();
+
+        Slice<ReviewCardDto> reviewCardDtos = reviewService.getReviewCardDtosByReviewSearchDto(pageable, reviewSearchDto);
+
+        addPagingAttributes(model, reviewCardDtos);
+        model.addAttribute("keyword", keyword);
+//        model.addAttribute("uri", )
 
         return REVIEWS_PATH;
     }
@@ -140,6 +144,18 @@ public class ReviewController {
     ) {
         likeOnReviewService.toggleReviewLike(reviewId, memberSessionInfo.getMemberId());
         return "redirect:/" + REVIEW_URI + "/" + reviewId;
+    }
+
+    private static void addPagingAttributes(Model model, Slice<ReviewCardDto> reviewCardDtos) {
+        if (reviewCardDtos.hasNext()) {
+            model.addAttribute("nextPageNumber", reviewCardDtos.nextPageable().getPageNumber());
+        }
+        if (reviewCardDtos.hasPrevious()) {
+            model.addAttribute("prevPageNumber", reviewCardDtos.previousPageable().getPageNumber());
+        }
+        model.addAttribute("hasNext", reviewCardDtos.hasNext());
+        model.addAttribute("hasPrevious", reviewCardDtos.hasPrevious());
+        model.addAttribute("reviews", reviewCardDtos.getContent());
     }
 }
 

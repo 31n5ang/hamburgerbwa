@@ -113,6 +113,22 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Slice<ReviewCardDto> getReviewCardDtos(Pageable pageable) {
         Slice<Review> reviews = reviewRepository.findSliceWithRelated(pageable);
+        return convertReviewsToReviewCardDtos(reviews);
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<ReviewCardDto> getReviewCardDtosByReviewSearchDto(Pageable pageable, ReviewSearchDto reviewSearchDto) {
+        String keyword = reviewSearchDto.getKeyword();
+
+        String titleKeyword = reviewSearchDto.isKeywordInTitle() ? keyword : "";
+        String contentKeyword = reviewSearchDto.isKeywordInTitle() ? keyword : "";
+        String shopNameKeyword = reviewSearchDto.isKeywordInTitle() ? keyword : "";
+
+        Slice<Review> reviews = reviewRepository.findSliceWithRelatedByKeyword(pageable, titleKeyword, contentKeyword, shopNameKeyword);
+        return convertReviewsToReviewCardDtos(reviews);
+    }
+
+    private Slice<ReviewCardDto> convertReviewsToReviewCardDtos(Slice<Review> reviews) {
         return reviews.map(review -> new ReviewCardDto(
                 review.getId(),
                 review.getShopName(),

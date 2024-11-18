@@ -27,4 +27,28 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             countQuery = "select r from Review r"
     )
     Slice<Review> findSliceWithRelated(Pageable pageable);
+
+    @Query(
+            value =
+                    "select r " +
+                    "from Review r " +
+                    "left join fetch r.thumbnailImage ti " +
+                    "join fetch r.member m " +
+                    "where r.title like " +
+                    "concat('%', :titleKeyword, '%') " +
+                    "or r.content like " +
+                    "concat('%', :contentKeyword, '%') " +
+                    "or r.shopName like " +
+                    "concat('%', :shopNameKeyword, '%') ",
+            countQuery =
+                    "select r from Review r " +
+                    "where r.title like " +
+                    "concat('%', :titleKeyword, '%') " +
+                    "or r.content like " +
+                    "concat('%', :contentKeyword, '%') " +
+                    "or r.shopName like " +
+                    "concat('%', :shopNameKeyword, '%') "
+    )
+    Slice<Review> findSliceWithRelatedByKeyword(Pageable pageable, String titleKeyword, String contentKeyword,
+                                                String shopNameKeyword);
 }
