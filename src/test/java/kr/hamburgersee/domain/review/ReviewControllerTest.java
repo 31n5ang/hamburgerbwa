@@ -274,6 +274,7 @@ class ReviewControllerTest {
         int pageNumber = 0;
         int pageSize = 10;
         String sortBy = "createdDate";
+        String keyword = "";
 
         List<ReviewCardDto> reviewCardDtos = List.of(
                 getSampleReviewCardDto(1L),
@@ -286,13 +287,14 @@ class ReviewControllerTest {
 
         Slice<ReviewCardDto> slice = new SliceImpl<>(reviewCardDtos, pageable, true);
 
-        when(reviewService.getReviewCardDtos(eq(pageable))).thenReturn(slice);
+        when(reviewService.getReviewCardDtosByReviewSearchDto(eq(pageable), any())).thenReturn(slice);
 
         // When
         mockMvc.perform(get("/review/list")
                         .param("page", String.valueOf(pageNumber))
                         .param("size", String.valueOf(pageSize))
-                        .param("sort", sortBy + ",desc"))
+                        .param("sort", sortBy + ",desc")
+                        .param("keyword", keyword))
 
                 // Then
                 .andExpect(status().isOk())
