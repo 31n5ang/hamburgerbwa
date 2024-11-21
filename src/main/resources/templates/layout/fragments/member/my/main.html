@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="info">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-center flex-column text-center">
+            <!-- 프로필 -->
+            <div class="profile rounded-circle mx-1 my-1" style="width: 200px; height: 200px">
+                <th:block th:if="${memberSessionInfo.memberProfileUrl}">
+                    <img th:src="${memberSessionInfo.memberProfileUrl}">
+                </th:block>
+                <th:block th:unless="${memberSessionInfo.memberProfileUrl}">
+                    <img src="/image/hamburgerbwa_logo_back.png">
+                </th:block>
+            </div>
+
+            <!-- 닉네임 -->
+            <div>
+                <span class="h2" th:text="${memberSessionInfo.nickname}">nickname</span> 동료님
+            </div>
+
+            <br />
+
+            <!-- 지역 -->
+            <div>
+                지역 : <span th:text="${info.region.displayName}">지역</span>
+            </div>
+
+            <!-- 성별 -->
+            <div>
+                성별 : <span th:text="${info.gender.displayName}">성별</span>
+            </div>
+
+            <!-- 소개글 -->
+            <div>
+                <span th:text="${info.bio}">소개글</span>
+            </div>
+
+            <br />
+
+            <!-- 통계 -->
+            <div class="h4 my-2 text-center border rounded p-3">
+                <div>
+                    🍟&nbsp;<span th:text="${info.likedCount}">받은 좋아요 수</span> 개
+                </div>
+                <div>
+                    리뷰&nbsp;<span th:text="${info.reviewCount}">리뷰 수</span> 글
+                </div>
+                <div>
+                    댓글&nbsp;<span th:text="${info.commentCount}">댓글 수</span> 글
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

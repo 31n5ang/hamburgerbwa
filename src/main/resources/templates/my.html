@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/simple-layout :: layout(~{::title}, ~{::article})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{page.title.my}">로그인</title>
+</head>
+<article style="max-width: 800px">
+    <div th:replace="~{layout/fragments/member/my/main :: info}">내 정보 수정</div>
+<!--    <div th:replace="~{layout/fragments/member/my/edit :: edit-form}">내 정보 수정</div>-->
+</article>
+</html>
