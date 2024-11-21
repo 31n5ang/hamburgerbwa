@@ -32,9 +32,8 @@
                             <img src="/image/hamburgerbwa_logo_back.png">
                         </th:block>
                     </div>
-                    <span class="font-weight-bold" th:text="${memberSessionInfo.nickname}">nickname</span>님
-                    &nbsp;|&nbsp;
-                    <a th:href="@{/member/my}" th:text="#{label.my}">MY</a>
+                    &nbsp;
+                    <a th:href="@{/my}" th:text="#{label.my}">MY</a>
                     &nbsp;|&nbsp;
                     <a th:href="@{/logout}" th:text="#{label.logout}">로그아웃</a>
                 </div>
@@ -55,7 +54,7 @@
             <a th:href="@{/review/list}" class="small">따끈따끈 새 리뷰</a>
             &nbsp;|&nbsp;
             <a th:href="@{/}" class="small">이달의 리뷰</a> &nbsp;|&nbsp;
-            <a th:href="@{/}" class="small">명예의 전당</a>
+            <a th:href="@{/}" class="small">감튀왕</a>
         </div>
     </div>
     <hr />
